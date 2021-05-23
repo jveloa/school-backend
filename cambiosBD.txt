@@ -1,0 +1,7 @@
+﻿Si tiene que hacer algún cambio en los métodos de la BD ponganlo aquí,
+para despues poder hacer una con los cambios de todos.
+Haganlo asi como se ve aqui, después alquien coje las 4 BD y hace los cambios de todos en una
+
+
+
+-cambie el método update_usuario (Junior)
