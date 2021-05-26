@@ -3,30 +3,31 @@ package cu.edu.cujae.backend.core.dto;
 
 //Baja
 public class DropStudentDto {
-    private int codDrop;
-    private int codStudent;
+    private ReasonDropDto reasonDrop;
+    private StudentDto student;
 
     public DropStudentDto() {
     }
 
-    public DropStudentDto(int codDrop, int codStudent) {
-        this.codDrop = codDrop;
-        this.codStudent = codStudent;
+    public DropStudentDto(ReasonDropDto reasonDrop, StudentDto student) {
+        this.reasonDrop = reasonDrop;
+        this.student = student;
     }
 
-    public int getCodDrop() {
-        return codDrop;
+
+    public ReasonDropDto getReasonDrop() {
+        return reasonDrop;
     }
 
-    public void setCodDrop(int codDrop) {
-        this.codDrop = codDrop;
+    public void setReasonDrop(ReasonDropDto reasonDrop) {
+        this.reasonDrop = reasonDrop;
     }
 
-    public int getCodStudent() {
-        return codStudent;
+    public StudentDto getStudent() {
+        return student;
     }
 
-    public void setCodStudent(int codStudent) {
-        this.codStudent = codStudent;
+    public void setStudent(StudentDto student) {
+        this.student = student;
     }
 }

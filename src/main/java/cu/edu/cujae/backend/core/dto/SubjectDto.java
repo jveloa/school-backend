@@ -4,17 +4,21 @@ package cu.edu.cujae.backend.core.dto;
 public class SubjectDto {
     private int codSubject;
     private int hours;
-    private String subject;
-    private int codYear;
+    private String nameSubject;
+    private YearDto year;
 
     public SubjectDto() {
     }
 
-    public SubjectDto(int codSubject, int hours, String subject, int codYear) {
+    public SubjectDto(int codSubject, int hours, String nameSubject, YearDto year) {
         this.codSubject = codSubject;
         this.hours = hours;
-        this.subject = subject;
-        this.codYear = codYear;
+        this.nameSubject = nameSubject;
+        this.year = year;
+    }
+
+    public SubjectDto(int codSubject) {
+        this.codSubject = codSubject;
     }
 
     public int getCodSubject() {
@@ -33,20 +37,19 @@ public class SubjectDto {
         this.hours = hours;
     }
 
-    public String getSubject() {
-        return subject;
+    public String getNameSubject() {
+        return nameSubject;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
+    public void setNameSubject(String nameSubject) {
+        this.nameSubject = nameSubject;
     }
 
-    public int getCodYear() {
-        return codYear;
+    public YearDto getYear() {
+        return year;
     }
 
-    public void setCodYear(int codYear) {
-        this.codYear = codYear;
+    public void setYear(YearDto year) {
+        this.year = year;
     }
-
 }

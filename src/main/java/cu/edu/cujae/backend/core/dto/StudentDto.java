@@ -4,18 +4,22 @@ public class StudentDto {
     private int codStudent;
     private String name;
     private String lastName;
-    private int codGender;
-    private int codMunicipality;
+    private GenderDto gender;
+    private MunicipalityDto municipality;
 
     public StudentDto() {
     }
 
-    public StudentDto(int codStudent, String name, String lastName, int codGender, int codMunicipality) {
+    public StudentDto(int codStudent, String name, String lastName, GenderDto gender, MunicipalityDto municipality) {
         this.codStudent = codStudent;
         this.name = name;
         this.lastName = lastName;
-        this.codGender = codGender;
-        this.codMunicipality = codMunicipality;
+        this.gender = gender;
+        this.municipality = municipality;
+    }
+
+    public StudentDto(int codStudent) {
+        this.codStudent = codStudent;
     }
 
     public int getCodStudent() {
@@ -42,19 +46,19 @@ public class StudentDto {
         this.lastName = lastName;
     }
 
-    public int getCodGender() {
-        return codGender;
+    public GenderDto getGender() {
+        return gender;
     }
 
-    public void setCodGender(int codGender) {
-        this.codGender = codGender;
+    public void setGender(GenderDto gender) {
+        this.gender = gender;
     }
 
-    public int getCodMunicipality() {
-        return codMunicipality;
+    public MunicipalityDto getMunicipality() {
+        return municipality;
     }
 
-    public void setCodMunicipality(int codMunicipality) {
-        this.codMunicipality = codMunicipality;
+    public void setMunicipality(MunicipalityDto municipality) {
+        this.municipality = municipality;
     }
 }

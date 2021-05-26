@@ -39,12 +39,15 @@ public class RoleServiceImpl<rs> implements RoleService {
 
     @Override
     public Map<Integer, String> getRolesMap() throws SQLException {
-        Map<Integer,String> mapRoles = new HashMap<Integer, String>();
-        List<RoleDto> roles = getRolesList();
-        for (RoleDto role: roles) {
-            mapRoles.put(role.getCodRole(),role.getNameRole());
+        Map<Integer, String> mapRoles = new HashMap<Integer, String>();
+        try (Connection con = jdbcTemplate.getDataSource().getConnection()) {
+            ResultSet rs = con.createStatement().executeQuery(
+                "select * from rol");
+            while (rs.next()) {
+                mapRoles.put(rs.getInt("cod_rol"), rs.getString("name"));
+            }
+            return mapRoles;
         }
-        return mapRoles;
     }
 }
 

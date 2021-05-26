@@ -1,6 +1,6 @@
 package cu.edu.cujae.backend.service;
 
-import cu.edu.cujae.backend.core.dto.EvaluationDto;
+import cu.edu.cujae.backend.core.dto.*;
 import cu.edu.cujae.backend.core.service.EvaluationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,10 +21,10 @@ public class EvaluationServiceImpl implements EvaluationService {
         try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
             CallableStatement cs = conn.prepareCall(
                     "{call create_nota(?, ?, ?, ?)}");
-            cs.setInt(1, evaluation.getCodSubject());
-            cs.setInt(2, evaluation.getCodStudent());
-            cs.setInt(3, evaluation.getCodYear());
-            cs.setInt(4, evaluation.getCodEvaluation());
+            cs.setInt(1, evaluation.getSubject().getCodSubject());
+            cs.setInt(2, evaluation.getStudent().getCodStudent());
+            cs.setInt(3, evaluation.getYear().getCodYear());
+            cs.setInt(4, evaluation.getRangeEvaluation().getCodEvaluation());
             cs.executeUpdate();
         }
     }
@@ -46,10 +46,10 @@ public class EvaluationServiceImpl implements EvaluationService {
         try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
             CallableStatement cs = conn.prepareCall(
                     "{call update_evaluation(?, ?, ?, ?)}");
-            cs.setInt(1, evaluation.getCodEvaluation());
-            cs.setInt(2, evaluation.getCodSubject());
-            cs.setInt(3, evaluation.getCodStudent());
-            cs.setInt(4, evaluation.getCodYear());
+            cs.setInt(1, evaluation.getRangeEvaluation().getCodEvaluation());
+            cs.setInt(2, evaluation.getSubject().getCodSubject());
+            cs.setInt(3, evaluation.getStudent().getCodStudent());
+            cs.setInt(4, evaluation.getYear().getCodYear());
             cs.executeUpdate();
         }
     }
@@ -67,10 +67,12 @@ public class EvaluationServiceImpl implements EvaluationService {
             ResultSet re = (ResultSet) cs.getObject(1);
 
             while (re.next()){
-                evaluations.add(new EvaluationDto(re.getInt("cod_asignatura")
-                        ,re.getInt("cod_estudiante")
-                        ,re.getInt("cod_anno")
-                        ,re.getInt("cod_evaluacion")));
+                evaluations.add(new EvaluationDto(
+                         new SubjectDto(re.getInt("cod_asignatura"))
+                        ,new StudentDto(re.getInt("cod_estudiante"))
+                        ,new YearDto(re.getInt("cod_anno"))
+                        ,new RangeEvaluationDto(re.getInt("cod_evaluacion"))
+                ));
             }
 
         return evaluations;

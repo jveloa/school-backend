@@ -3,16 +3,20 @@ package cu.edu.cujae.backend.core.dto;
 public class YearDto {
 
     private int codYear;
-    private int codCourse;
-    private int year;
+    private CourseDto course;
+    private int yearNumber;
 
     public YearDto() {
     }
 
-    public YearDto(int codYear, int codCourse, int year) {
+    public YearDto(int codYear, CourseDto course, int yearNumber) {
         this.codYear = codYear;
-        this.codCourse = codCourse;
-        this.year = year;
+        this.course = course;
+        this.yearNumber = yearNumber;
+    }
+
+    public YearDto(int codYear) {
+        this.codYear = codYear;
     }
 
     public int getCodYear() {
@@ -23,19 +27,19 @@ public class YearDto {
         this.codYear = codYear;
     }
 
-    public int getCodCourse() {
-        return codCourse;
+    public CourseDto getCourse() {
+        return course;
     }
 
-    public void setCodCourse(int codCourse) {
-        this.codCourse = codCourse;
+    public void setCourse(CourseDto course) {
+        this.course = course;
     }
 
-    public int getYear() {
-        return year;
+    public int getYearNumber() {
+        return yearNumber;
     }
 
-    public void setYear(int year) {
-        this.year = year;
+    public void setYearNumber(int yearNumber) {
+        this.yearNumber = yearNumber;
     }
 }

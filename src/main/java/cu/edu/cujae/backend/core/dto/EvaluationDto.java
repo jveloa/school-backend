@@ -1,50 +1,50 @@
 package cu.edu.cujae.backend.core.dto;
 
 public class EvaluationDto {
-    private int codSubject;
-    private int codStudent;
-    private int codYear;
-    private int codEvaluation;
+    private SubjectDto subject;
+    private StudentDto student;
+    private YearDto year;
+    private RangeEvaluationDto rangeEvaluation;
 
     public EvaluationDto() {
     }
 
-    public EvaluationDto(int codSubject, int codStudent, int codYear, int codEvaluation) {
-        this.codSubject = codSubject;
-        this.codStudent = codStudent;
-        this.codYear = codYear;
-        this.codEvaluation = codEvaluation;
+    public EvaluationDto(SubjectDto subject, StudentDto student, YearDto year, RangeEvaluationDto rangeEvaluation) {
+        this.subject = subject;
+        this.student = student;
+        this.year = year;
+        this.rangeEvaluation = rangeEvaluation;
     }
 
-    public int getCodSubject() {
-        return codSubject;
+    public SubjectDto getSubject() {
+        return subject;
     }
 
-    public void setCodSubject(int codSubject) {
-        this.codSubject = codSubject;
+    public void setSubject(SubjectDto subject) {
+        this.subject = subject;
     }
 
-    public int getCodStudent() {
-        return codStudent;
+    public StudentDto getStudent() {
+        return student;
     }
 
-    public void setCodStudent(int codStudent) {
-        this.codStudent = codStudent;
+    public void setStudent(StudentDto student) {
+        this.student = student;
     }
 
-    public int getCodYear() {
-        return codYear;
+    public YearDto getYear() {
+        return year;
     }
 
-    public void setCodYear(int codYear) {
-        this.codYear = codYear;
+    public void setYear(YearDto year) {
+        this.year = year;
     }
 
-    public int getCodEvaluation() {
-        return codEvaluation;
+    public RangeEvaluationDto getRangeEvaluation() {
+        return rangeEvaluation;
     }
 
-    public void setCodEvaluation(int codEvaluation) {
-        this.codEvaluation = codEvaluation;
+    public void setRangeEvaluation(RangeEvaluationDto rangeEvaluation) {
+        this.rangeEvaluation = rangeEvaluation;
     }
 }

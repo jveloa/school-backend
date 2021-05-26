@@ -12,6 +12,10 @@ public class CourseDto {
         this.course = course;
     }
 
+    public CourseDto(int codCourse) {
+        this.codCourse = codCourse;
+    }
+
     public int getCodCourse() {
         return codCourse;
     }

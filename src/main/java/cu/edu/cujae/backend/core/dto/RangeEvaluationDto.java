@@ -12,6 +12,10 @@ public class RangeEvaluationDto {
         this.evaluation = evaluation;
     }
 
+    public RangeEvaluationDto(int codEvaluation) {
+        this.codEvaluation = codEvaluation;
+    }
+
     public int getCodEvaluation() {
         return codEvaluation;
     }

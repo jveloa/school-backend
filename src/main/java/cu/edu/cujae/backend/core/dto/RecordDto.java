@@ -1,30 +1,30 @@
 package cu.edu.cujae.backend.core.dto;
 
 public class RecordDto {
-    private int codGroup;
-    private int codStudent;
+    private GroupDto group;
+    private StudentDto student;
 
     public RecordDto() {
     }
 
-    public RecordDto(int codGroup, int codStudent) {
-        this.codGroup = codGroup;
-        this.codStudent = codStudent;
+    public RecordDto(GroupDto group, StudentDto student) {
+        this.group = group;
+        this.student = student;
     }
 
-    public int getCodGroup() {
-        return codGroup;
+    public GroupDto getGroup() {
+        return group;
     }
 
-    public void setCodGroup(int codGroup) {
-        this.codGroup = codGroup;
+    public void setGroup(GroupDto group) {
+        this.group = group;
     }
 
-    public int getCodStudent() {
-        return codStudent;
+    public StudentDto getStudent() {
+        return student;
     }
 
-    public void setCodStudent(int codStudent) {
-        this.codStudent = codStudent;
+    public void setStudent(StudentDto student) {
+        this.student = student;
     }
 }

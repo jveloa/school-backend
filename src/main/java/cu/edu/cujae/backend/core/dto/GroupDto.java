@@ -2,15 +2,15 @@ package cu.edu.cujae.backend.core.dto;
 
 public class GroupDto {
     private int codGroup;
-    private int codYear;
+    private YearDto year;
     private int numberGroup;
 
     public GroupDto() {
     }
 
-    public GroupDto(int codGroup, int codYear, int numberGroup) {
+    public GroupDto(int codGroup, YearDto year, int numberGroup) {
         this.codGroup = codGroup;
-        this.codYear = codYear;
+        this.year = year;
         this.numberGroup = numberGroup;
     }
 
@@ -22,12 +22,12 @@ public class GroupDto {
         this.codGroup = codGroup;
     }
 
-    public int getCodYear() {
-        return codYear;
+    public YearDto getYear() {
+        return year;
     }
 
-    public void setCodYear(int codYear) {
-        this.codYear = codYear;
+    public void setYear(YearDto year) {
+        this.year = year;
     }
 
     public int getNumberGroup() {
