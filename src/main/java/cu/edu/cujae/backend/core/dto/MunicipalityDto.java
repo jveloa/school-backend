@@ -2,12 +2,12 @@ package cu.edu.cujae.backend.core.dto;
 
 public class MunicipalityDto {
     private int codMunicipality;
-    private MunicipalityDto municipality;
+    private String municipality;
 
     public MunicipalityDto() {
     }
 
-    public MunicipalityDto(int codMunicipality, MunicipalityDto municipality) {
+    public MunicipalityDto(int codMunicipality, String municipality) {
         this.codMunicipality = codMunicipality;
         this.municipality = municipality;
     }
@@ -20,11 +20,11 @@ public class MunicipalityDto {
         this.codMunicipality = codMunicipality;
     }
 
-    public MunicipalityDto getMunicipality() {
+    public String getMunicipality() {
         return municipality;
     }
 
-    public void setMunicipality(MunicipalityDto municipality) {
+    public void setMunicipality(String municipality) {
         this.municipality = municipality;
     }
 }
