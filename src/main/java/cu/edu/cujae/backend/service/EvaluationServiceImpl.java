@@ -58,8 +58,8 @@ public class EvaluationServiceImpl implements EvaluationService {
     public List<EvaluationDto> getEvaluationsByStudent(int codStudent) throws SQLException {
         List<EvaluationDto> evaluations = new ArrayList<EvaluationDto>();
         try(Connection conn = jdbcTemplate.getDataSource().getConnection()) {
-            CallableStatement cs = conn.prepareCall("{call notas_por_estudiantes(?, ?)}");
-
+            conn.setAutoCommit(false);
+            CallableStatement cs = conn.prepareCall("{call notas_por_estudiante(?, ?)}");
             cs.setNull(1, Types.REF, "refcursor");
             cs.registerOutParameter(1, Types.REF_CURSOR);
             cs.setInt(2, codStudent);
