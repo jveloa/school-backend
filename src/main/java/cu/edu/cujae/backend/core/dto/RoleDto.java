@@ -2,14 +2,14 @@ package cu.edu.cujae.backend.core.dto;
 
 public class RoleDto {
     private int codRole;
-    private int role;
+    private String nameRole;
 
     public RoleDto() {
     }
 
-    public RoleDto(int codRole, int role) {
+    public RoleDto(int codRole, String nameRole) {
         this.codRole = codRole;
-        this.role = role;
+        this.nameRole = nameRole;
     }
 
     public int getCodRole() {
@@ -20,11 +20,11 @@ public class RoleDto {
         this.codRole = codRole;
     }
 
-    public int getRole() {
-        return role;
+    public String getNameRole() {
+        return nameRole;
     }
 
-    public void setRole(int role) {
-        this.role = role;
+    public void setNameRole(String nameRole) {
+        this.nameRole = nameRole;
     }
 }

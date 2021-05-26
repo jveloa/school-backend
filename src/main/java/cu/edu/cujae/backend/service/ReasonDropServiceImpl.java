@@ -5,6 +5,7 @@ import cu.edu.cujae.backend.core.dto.ReasonDropDto;
 import cu.edu.cujae.backend.core.service.ReasonDropService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -13,6 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class ReasonDropServiceImpl implements ReasonDropService {
 
     @Autowired

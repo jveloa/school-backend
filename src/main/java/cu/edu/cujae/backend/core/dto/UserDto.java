@@ -4,16 +4,16 @@ public class UserDto {
     private int codUser;
     private String username;
     private String password;
-    private int codRole;
+    private RoleDto role;
 
     public UserDto() {
     }
 
-    public UserDto(int codUser, String username, String password, int codRole) {
+    public UserDto(int codUser, String username, String password, RoleDto role) {
         this.codUser = codUser;
         this.username = username;
         this.password = password;
-        this.codRole = codRole;
+        this.role = role;
     }
 
     public int getCodUser() {
@@ -40,12 +40,12 @@ public class UserDto {
         this.password = password;
     }
 
-    public int getCodRole() {
-        return codRole;
+    public RoleDto getRole() {
+        return role;
     }
 
-    public void setCodRole(int codRole) {
-        this.codRole = codRole;
+    public void setRole(RoleDto role) {
+        this.role = role;
     }
 }
 
