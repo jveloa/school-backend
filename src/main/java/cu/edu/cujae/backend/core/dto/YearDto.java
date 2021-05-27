@@ -3,16 +3,16 @@ package cu.edu.cujae.backend.core.dto;
 public class YearDto {
 
     private int codYear;
-    private CourseDto course;
     private int yearNumber;
+    private CourseDto course;
 
     public YearDto() {
     }
 
-    public YearDto(int codYear, CourseDto course, int yearNumber) {
+    public YearDto(int codYear, int yearNumber, CourseDto course) {
         this.codYear = codYear;
-        this.course = course;
         this.yearNumber = yearNumber;
+        this.course = course;
     }
 
     public YearDto(int codYear) {
