@@ -12,7 +12,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -61,6 +63,19 @@ public class CourseServiceImp implements CourseService {
             CallableStatement cs = conn.prepareCall("update_curso(?,?)");
             cs.setInt(1,course.getCodCourse());
             cs.setString(2, course.getCourse());
+        }
+    }
+
+    @Override
+    public Map<Integer, String> getCoursesMap() throws SQLException {
+        Map<Integer, String> mapCourses = new HashMap<Integer, String>();
+        try (Connection con = jdbcTemplate.getDataSource().getConnection()) {
+            ResultSet rs = con.createStatement().executeQuery(
+                    "select * from curso");
+            while (rs.next()) {
+                mapCourses.put(rs.getInt("cod_curso"), rs.getString("curso"));
+            }
+            return mapCourses;
         }
     }
 }
