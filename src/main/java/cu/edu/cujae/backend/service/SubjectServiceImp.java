@@ -4,6 +4,7 @@ package cu.edu.cujae.backend.service;
 import cu.edu.cujae.backend.core.dto.SubjectDto;
 import cu.edu.cujae.backend.core.dto.YearDto;
 import cu.edu.cujae.backend.core.service.SubjectService;
+import cu.edu.cujae.backend.core.service.YearService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,8 @@ public class SubjectServiceImp implements SubjectService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private YearService yearService;
 
     @Override
     public void createSubject(SubjectDto subject) throws SQLException {
@@ -46,6 +49,7 @@ public class SubjectServiceImp implements SubjectService {
             new YearDto(rs.getInt("cod_anno"))
          ));
         }
+        setYearData(subjectList);
         return subjectList;
     }
 
@@ -66,5 +70,9 @@ public class SubjectServiceImp implements SubjectService {
             cs.setInt(3, subject.getHours());
             cs.setInt(4, subject.getYear().getCodYear());
         }
+    }
+    private void setYearData(List<SubjectDto> subjects) throws SQLException{
+        for (SubjectDto subject : subjects)
+            yearService.setData(subject.getYear());
     }
 }
