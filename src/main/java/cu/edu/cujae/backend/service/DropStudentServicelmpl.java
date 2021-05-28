@@ -25,7 +25,7 @@ public class DropStudentServicelmpl implements DropStudentService {
             CallableStatement cs = conn.prepareCall(
                     "{call create_baja(?,?)}");
             cs.setInt(1,dropStudent.getStudent().getCodStudent());
-            cs.setInt(1,dropStudent.getReasonDrop().getCodReason());
+            cs.setInt(2,dropStudent.getReasonDrop().getCodReason());
             cs.executeUpdate();
         }
     }
