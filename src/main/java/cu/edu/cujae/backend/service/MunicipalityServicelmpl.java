@@ -35,8 +35,8 @@ public class MunicipalityServicelmpl implements MunicipalityService {
                 "SELECT * FROM municipio");
         while (rs.next()){
             municipalitys.add(new MunicipalityDto(
-                    rs.getInt("cod_municipio"),
-                    rs.getString("municipio")
+                    rs.getInt("cod__municipio"),
+                    rs.getString("nombre")
 
 
             ));

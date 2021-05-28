@@ -19,13 +19,13 @@ public class StudentsServicelmpl implements StudentsService {
     public List<StudentDto> getStudents() throws SQLException {
         List<StudentDto> students = new ArrayList<>();
         try (Connection con = jdbcTemplate.getDataSource().getConnection()) {
-            ResultSet rs = con.createStatement().executeQuery("SELECT * FROM estudiantes");
+            ResultSet rs = con.createStatement().executeQuery("SELECT * FROM estudiante");
             while (rs.next()) {
                 students.add(new StudentDto(
                         rs.getInt("cod_estudiante"),
                         rs.getString("nombre"),
                         rs.getString("apellidos"),
-                        new GenderDto(rs.getInt("cod_sexo"),"sexo"),
+                        new GenderDto(rs.getInt("cod_sexo"),""),
                         new MunicipalityDto(rs.getInt("cod_municipio"),"municipio")
                 ));
             }

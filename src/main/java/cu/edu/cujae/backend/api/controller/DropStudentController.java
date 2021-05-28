@@ -23,7 +23,7 @@ public class DropStudentController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<String> create(@RequestBody DropStudentDto dropStudent) throws SQLException {
+    public ResponseEntity<String> createDropStudent(@RequestBody DropStudentDto dropStudent) throws SQLException {
         dropStudentService.createDropStudent(dropStudent);
         return ResponseEntity.ok("Baja insertada");
     }
