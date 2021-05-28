@@ -5,11 +5,12 @@ import cu.edu.cujae.backend.core.dto.*;
 import cu.edu.cujae.backend.core.service.StudentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+@Service
 public class StudentsServicelmpl implements StudentsService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
