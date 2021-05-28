@@ -34,7 +34,7 @@ public class DropStudentServicelmpl implements DropStudentService {
     public List<DropStudentDto>getDropStudent() throws SQLException {
         List<DropStudentDto> dropStudentList = new ArrayList<DropStudentDto>();
         ResultSet rs = jdbcTemplate.getDataSource().getConnection().createStatement().executeQuery(
-                "Select * from baja"
+                "SELECT * from baja"
         );
         while (rs.next()){
             dropStudentList.add(new DropStudentDto(new ReasonDropDto(rs.getInt("cod_motivo"),null),new StudentDto(rs.getInt("cod_estudiante"),null,null,null,null)

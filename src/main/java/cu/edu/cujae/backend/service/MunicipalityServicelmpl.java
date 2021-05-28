@@ -1,6 +1,6 @@
 package cu.edu.cujae.backend.service;
 
-import cu.edu.cujae.backend.core.dto.GenderDto;
+
 import cu.edu.cujae.backend.core.dto.MunicipalityDto;
 import cu.edu.cujae.backend.core.service.MunicipalityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class MunicipalityServicelmpl implements MunicipalityService {
     }
 
     @Override
-    public List<MunicipalityDto> getMunicipalitys() throws SQLException {
+    public List<MunicipalityDto> getMunicipalities() throws SQLException {
         List<MunicipalityDto> municipalitys = new ArrayList<MunicipalityDto>();
         ResultSet rs = jdbcTemplate.getDataSource().getConnection().createStatement().executeQuery(
                 "SELECT * FROM municipio");

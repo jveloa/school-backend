@@ -1,8 +1,6 @@
 package cu.edu.cujae.backend.api.controller;
 
-import cu.edu.cujae.backend.core.dto.GenderDto;
 import cu.edu.cujae.backend.core.dto.MunicipalityDto;
-import cu.edu.cujae.backend.core.service.GenderService;
 import cu.edu.cujae.backend.core.service.MunicipalityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,15 +8,17 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.List;
-
+@RestController
+@RequestMapping("/api/v1/municipality")
 public class MunicipalityController {
+
     @Autowired
-    private MunicipalityService municipalityService;
+    private  MunicipalityService municipalityService;
 
     @GetMapping("/")
-    public ResponseEntity<List<MunicipalityDto>> getMunicipalitys() throws SQLException {
-        List<MunicipalityDto> MunicipalitysList = municipalityService.getMunicipalitys();
-        return ResponseEntity.ok(MunicipalitysList);
+    public ResponseEntity<List<MunicipalityDto>> getMunicipalities() throws SQLException {
+        List<MunicipalityDto> MunicipalityList = municipalityService.getMunicipalities();
+        return ResponseEntity.ok(MunicipalityList);
     }
 
     @PostMapping("/")

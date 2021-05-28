@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface MunicipalityService {
     void createMunicipality(MunicipalityDto municipality) throws SQLException;
-    List<MunicipalityDto> getMunicipalitys() throws SQLException;
+    List<MunicipalityDto> getMunicipalities() throws SQLException;
     void deleteMunicipality(int codMunicipality) throws SQLException;
     void updateMunicipality(MunicipalityDto municipality) throws SQLException;
 }

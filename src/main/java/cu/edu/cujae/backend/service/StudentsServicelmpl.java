@@ -24,7 +24,7 @@ public class StudentsServicelmpl implements StudentsService {
                         rs.getInt("cod_estudiante"),
                         rs.getString("nombre"),
                         rs.getString("apellidos"),
-                        new GenderDto(rs.getInt("cod_sexo"),""),
+                        new GenderDto(rs.getInt("cod_sexo"),"sexo"),
                         new MunicipalityDto(rs.getInt("cod_municipio"),"municipio")
                 ));
             }
