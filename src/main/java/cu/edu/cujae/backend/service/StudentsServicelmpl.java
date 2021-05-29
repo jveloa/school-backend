@@ -5,11 +5,12 @@ import cu.edu.cujae.backend.core.dto.*;
 import cu.edu.cujae.backend.core.service.StudentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+@Service
 public class StudentsServicelmpl implements StudentsService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -18,7 +19,7 @@ public class StudentsServicelmpl implements StudentsService {
     public List<StudentDto> getStudents() throws SQLException {
         List<StudentDto> students = new ArrayList<>();
         try (Connection con = jdbcTemplate.getDataSource().getConnection()) {
-            ResultSet rs = con.createStatement().executeQuery("SELECT * FROM estudiantes");
+            ResultSet rs = con.createStatement().executeQuery("SELECT * FROM estudiante");
             while (rs.next()) {
                 students.add(new StudentDto(
                         rs.getInt("cod_estudiante"),

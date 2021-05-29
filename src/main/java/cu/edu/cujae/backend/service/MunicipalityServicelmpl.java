@@ -1,10 +1,11 @@
 package cu.edu.cujae.backend.service;
 
-import cu.edu.cujae.backend.core.dto.GenderDto;
+
 import cu.edu.cujae.backend.core.dto.MunicipalityDto;
 import cu.edu.cujae.backend.core.service.MunicipalityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -12,7 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+@Service
 public class MunicipalityServicelmpl implements MunicipalityService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -28,14 +29,14 @@ public class MunicipalityServicelmpl implements MunicipalityService {
     }
 
     @Override
-    public List<MunicipalityDto> getMunicipalitys() throws SQLException {
+    public List<MunicipalityDto> getMunicipalities() throws SQLException {
         List<MunicipalityDto> municipalitys = new ArrayList<MunicipalityDto>();
         ResultSet rs = jdbcTemplate.getDataSource().getConnection().createStatement().executeQuery(
                 "SELECT * FROM municipio");
         while (rs.next()){
             municipalitys.add(new MunicipalityDto(
-                    rs.getInt("cod_municipio"),
-                    rs.getString("municipio")
+                    rs.getInt("cod__municipio"),
+                    rs.getString("nombre")
 
 
             ));

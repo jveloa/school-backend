@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.List;
-
+@RestController
+@RequestMapping("/api/v1/dropStudent")
 public class DropStudentController {
     @Autowired
     private DropStudentService dropStudentService;
@@ -22,7 +23,7 @@ public class DropStudentController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<String> create(@RequestBody DropStudentDto dropStudent) throws SQLException {
+    public ResponseEntity<String> createDropStudent(@RequestBody DropStudentDto dropStudent) throws SQLException {
         dropStudentService.createDropStudent(dropStudent);
         return ResponseEntity.ok("Baja insertada");
     }
