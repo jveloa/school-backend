@@ -3,18 +3,17 @@ package cu.edu.cujae.backend.service;
 
 import cu.edu.cujae.backend.core.dto.SubjectDto;
 import cu.edu.cujae.backend.core.dto.YearDto;
+import cu.edu.cujae.backend.core.service.CourseService;
 import cu.edu.cujae.backend.core.service.SubjectService;
 import cu.edu.cujae.backend.core.service.YearService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -26,11 +25,14 @@ public class SubjectServiceImp implements SubjectService {
     @Autowired
     private YearService yearService;
 
+    @Autowired
+    private CourseService courseService;
+
     @Override
     public void createSubject(SubjectDto subject) throws SQLException {
-        try (Connection conn = jdbcTemplate.getDataSource().getConnection()){
+        try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
             CallableStatement cs = conn.prepareCall("{call create_asignatura(?,?,?)}");
-            cs.setString(1,subject.getNameSubject());
+            cs.setString(1, subject.getNameSubject());
             cs.setInt(2, subject.getHours());
             cs.setInt(3, subject.getYear().getCodYear());
             cs.executeUpdate();
@@ -42,13 +44,13 @@ public class SubjectServiceImp implements SubjectService {
         List<SubjectDto> subjectList = new ArrayList<SubjectDto>();
         ResultSet rs = jdbcTemplate.getDataSource().getConnection().createStatement().
                 executeQuery("SELECT * from asignatura");
-        while (rs.next()){
-         subjectList.add(new SubjectDto(
-            rs.getInt("cod_asignatura"),
-            rs.getInt("horas"),
-            rs.getString("nombre"),
-            new YearDto(rs.getInt("cod_anno"))
-         ));
+        while (rs.next()) {
+            subjectList.add(new SubjectDto(
+                    rs.getInt("cod_asignatura"),
+                    rs.getInt("horas"),
+                    rs.getString("nombre"),
+                    new YearDto(rs.getInt("cod_anno"))
+            ));
         }
         setYearData(subjectList);
         return subjectList;
@@ -56,7 +58,7 @@ public class SubjectServiceImp implements SubjectService {
 
     @Override
     public void deleteSubject(int codSubject) throws SQLException {
-        try (Connection conn = jdbcTemplate.getDataSource().getConnection()){
+        try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
             CallableStatement cs = conn.prepareCall("{call delete_asignatura(?)}");
             cs.setInt(1, codSubject);
             cs.executeUpdate();
@@ -65,7 +67,7 @@ public class SubjectServiceImp implements SubjectService {
 
     @Override
     public void updateSubject(SubjectDto subject) throws SQLException {
-        try (Connection conn = jdbcTemplate.getDataSource().getConnection()){
+        try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
             CallableStatement cs = conn.prepareCall("{call update_asignatura(?,?,?,?)}");
             cs.setInt(1, subject.getCodSubject());
             cs.setString(2, subject.getNameSubject());
@@ -74,8 +76,16 @@ public class SubjectServiceImp implements SubjectService {
             cs.executeUpdate();
         }
     }
-    private void setYearData(List<SubjectDto> subjects) throws SQLException{
-        for (SubjectDto subject : subjects)
-            yearService.setData(subject.getYear());
+
+    private void setYearData(List<SubjectDto> subjects) throws SQLException {
+        Connection conn = jdbcTemplate.getDataSource().getConnection();
+        Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+        ResultSet rs = stmt.
+                executeQuery("SELECT * from anno");
+        Map<Integer, String> mapCourses = courseService.getCoursesMap();
+        for (SubjectDto subject : subjects) {
+            yearService.setData(subject.getYear(), mapCourses, rs);
+        }
+
     }
 }
