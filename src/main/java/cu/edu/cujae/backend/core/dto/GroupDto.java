@@ -14,6 +14,10 @@ public class GroupDto {
         this.numberGroup = numberGroup;
     }
 
+    public GroupDto(int codGroup) {
+        this.codGroup = codGroup;
+    }
+
     public int getCodGroup() {
         return codGroup;
     }
