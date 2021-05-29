@@ -29,9 +29,10 @@ public class YearServiceImp implements YearService {
     @Override
     public void createYear(YearDto year) throws SQLException {
         try(Connection conn = jdbcTemplate.getDataSource().getConnection()){
-            CallableStatement cs = conn.prepareCall("create_anno(?,?)");
+            CallableStatement cs = conn.prepareCall("{call create_anno(?,?)}");
             cs.setInt(1,year.getYearNumber());
             cs.setInt(2,year.getCourse().getCodCourse());
+            cs.executeUpdate();
         }
     }
 
@@ -54,16 +55,20 @@ public class YearServiceImp implements YearService {
     @Override
     public void deleteYear(int codYear) throws SQLException {
         try (Connection conn = jdbcTemplate.getDataSource().getConnection()){
-            CallableStatement cs = conn.prepareCall("delete_anno(?)");
+            CallableStatement cs = conn.prepareCall("{call delete_anno(?)}");
             cs.setInt(1, codYear);
+            cs.executeUpdate();
         }
     }
 
     @Override
     public void updateYear(YearDto year) throws SQLException {
         try (Connection conn = jdbcTemplate.getDataSource().getConnection()){
-            CallableStatement cs = conn.prepareCall("update_anno");
+            CallableStatement cs = conn.prepareCall("{call update_anno(?,?,?)}");
             cs.setInt(1, year.getCodYear());
+            cs.setInt(2,year.getYearNumber());
+            cs.setInt(3, year.getCourse().getCodCourse());
+            cs.executeUpdate();
         }
     }
 

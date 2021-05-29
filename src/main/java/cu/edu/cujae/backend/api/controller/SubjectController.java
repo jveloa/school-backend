@@ -2,7 +2,6 @@ package cu.edu.cujae.backend.api.controller;
 
 import java.sql.SQLException;
 import java.util.List;
-
 import cu.edu.cujae.backend.core.service.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

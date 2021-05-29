@@ -29,10 +29,11 @@ public class SubjectServiceImp implements SubjectService {
     @Override
     public void createSubject(SubjectDto subject) throws SQLException {
         try (Connection conn = jdbcTemplate.getDataSource().getConnection()){
-            CallableStatement cs = conn.prepareCall("create_asignatura(?,?,?)");
+            CallableStatement cs = conn.prepareCall("{call create_asignatura(?,?,?)}");
             cs.setString(1,subject.getNameSubject());
             cs.setInt(2, subject.getHours());
             cs.setInt(3, subject.getYear().getCodYear());
+            cs.executeUpdate();
         }
     }
 
@@ -56,19 +57,21 @@ public class SubjectServiceImp implements SubjectService {
     @Override
     public void deleteSubject(int codSubject) throws SQLException {
         try (Connection conn = jdbcTemplate.getDataSource().getConnection()){
-            CallableStatement cs = conn.prepareCall("delete_asignatura(?)");
+            CallableStatement cs = conn.prepareCall("{call delete_asignatura(?)}");
             cs.setInt(1, codSubject);
+            cs.executeUpdate();
         }
     }
 
     @Override
     public void updateSubject(SubjectDto subject) throws SQLException {
         try (Connection conn = jdbcTemplate.getDataSource().getConnection()){
-            CallableStatement cs = conn.prepareCall("update_asignatura(?,?,?,?)");
+            CallableStatement cs = conn.prepareCall("{call update_asignatura(?,?,?,?)}");
             cs.setInt(1, subject.getCodSubject());
             cs.setString(2, subject.getNameSubject());
             cs.setInt(3, subject.getHours());
             cs.setInt(4, subject.getYear().getCodYear());
+            cs.executeUpdate();
         }
     }
     private void setYearData(List<SubjectDto> subjects) throws SQLException{

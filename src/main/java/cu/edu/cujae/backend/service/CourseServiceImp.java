@@ -52,17 +52,19 @@ public class CourseServiceImp implements CourseService {
     @Override
     public void deleteCourse(int codCourse) throws SQLException {
         try (Connection conn = jdbcTemplate.getDataSource().getConnection()){
-            CallableStatement cs = conn.prepareCall("delete_curso(?)");
+            CallableStatement cs = conn.prepareCall("{call delete_curso(?)}");
             cs.setInt(1,codCourse);
+            cs.executeUpdate();
         }
     }
 
     @Override
     public void updateCourse(CourseDto course) throws SQLException {
         try(Connection conn = jdbcTemplate.getDataSource().getConnection()){
-            CallableStatement cs = conn.prepareCall("update_curso(?,?)");
+            CallableStatement cs = conn.prepareCall("{call update_curso(?,?)}");
             cs.setInt(1,course.getCodCourse());
             cs.setString(2, course.getCourse());
+            cs.executeUpdate();
         }
     }
 
