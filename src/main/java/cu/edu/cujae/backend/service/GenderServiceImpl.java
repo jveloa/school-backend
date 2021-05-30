@@ -34,7 +34,7 @@ public class GenderServiceImpl implements GenderService {
         while (rs.next()){
             genders.add(new GenderDto(
                     rs.getInt("cod_sexo"),
-                    rs.getString("sexo")
+                    rs.getString("nombre_sexo")
 
             ));
 
