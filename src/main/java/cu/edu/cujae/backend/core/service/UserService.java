@@ -10,8 +10,7 @@ public interface UserService {
     List<UserDto> getUsers() throws SQLException;
     void deleteUsers(int codUser) throws SQLException;
     void updateUser(UserDto user) throws SQLException;
+    UserDto getUserByUsername(String username) throws SQLException;
 
-
-
-
+    UserDto getUserById(int  codUser) throws SQLException;
 }

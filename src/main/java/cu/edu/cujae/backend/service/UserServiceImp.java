@@ -5,6 +5,7 @@ import cu.edu.cujae.backend.core.service.RoleService;
 import cu.edu.cujae.backend.core.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
@@ -47,7 +48,7 @@ public class UserServiceImp implements UserService {
         try (Connection con = jdbcTemplate.getDataSource().getConnection()) {
             CallableStatement cs = con.prepareCall("{call create_usuario(?,?,?)}");
             cs.setString(1, user.getUsername());
-            cs.setString(2, getMd5Hash(user.getPassword()));
+            cs.setString(2, encodePass(user.getPassword()));
             cs.setInt(3, user.getRole().getCodRole());
             cs.executeUpdate();
         }
@@ -74,6 +75,44 @@ public class UserServiceImp implements UserService {
         }
     }
 
+    @Override
+    public UserDto getUserByUsername(String username) throws SQLException {
+        UserDto user = null;
+        try(Connection con = jdbcTemplate.getDataSource().getConnection()){
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM usuario where nombre = ? ");
+            ps.setString(1,username);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+                user = new UserDto(
+                    rs.getInt("cod_usuario"),
+                    rs.getString("nombre"),
+                    rs.getString("contrasenna"),
+                    new RoleDto(rs.getInt("cod_rol"))
+                    );
+        }
+
+        return user;
+    }
+
+    @Override
+    public UserDto getUserById(int codUser) throws SQLException {
+        UserDto user = null;
+        try(Connection con = jdbcTemplate.getDataSource().getConnection()){
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM usuario where cod_usuario = ? ");
+            ps.setInt(1,codUser);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                user = new UserDto(
+                    rs.getInt("cod_usuario"),
+                    rs.getString("nombre"),
+                    rs.getString("contrasenna"),
+                    new RoleDto(rs.getInt("cod_rol"))
+                );
+            }
+        }
+
+        return user;
+    }
 
     private String getMd5Hash(String password) {
         MessageDigest md;
@@ -96,6 +135,10 @@ public class UserServiceImp implements UserService {
         for (UserDto user: users) {
             user.getRole().setNameRole( mapRoles.get(user.getRole().getCodRole()));
         }
+    }
+
+    private String encodePass(String password) {
+        return new BCryptPasswordEncoder().encode(password);
     }
 
 

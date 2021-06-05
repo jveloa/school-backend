@@ -1,20 +1,21 @@
 package cu.edu.cujae.backend.core.dto;
 
-public class UserDto {
+public class UserAuthenticatedDto {
     private int codUser;
     private String username;
     private String password;
     private RoleDto role;
+    private String token;
 
-    public UserDto() {
+    public UserAuthenticatedDto() {
     }
 
-
-    public UserDto(int codUser, String username, String password, RoleDto role) {
+    public UserAuthenticatedDto(int codUser, String username, String password, RoleDto role, String token) {
         this.codUser = codUser;
         this.username = username;
         this.password = password;
         this.role = role;
+        this.token = token;
     }
 
     public int getCodUser() {
@@ -48,5 +49,12 @@ public class UserDto {
     public void setRole(RoleDto role) {
         this.role = role;
     }
-}
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+}

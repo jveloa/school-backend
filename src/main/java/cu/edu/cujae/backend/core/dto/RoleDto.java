@@ -7,6 +7,10 @@ public class RoleDto {
     public RoleDto() {
     }
 
+    public RoleDto(int codRole) {
+        this.codRole = codRole;
+    }
+
     public RoleDto(int codRole, String nameRole) {
         this.codRole = codRole;
         this.nameRole = nameRole;
