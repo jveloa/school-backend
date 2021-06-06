@@ -90,7 +90,9 @@ public class UserServiceImp implements UserService {
                     new RoleDto(rs.getInt("cod_rol"))
                     );
         }
-
+        List<UserDto> users = new ArrayList<UserDto>();
+        users.add(user);
+        changeCodRolebyNameRole(users);
         return user;
     }
 
@@ -114,6 +116,7 @@ public class UserServiceImp implements UserService {
         return user;
     }
 
+
     private String getMd5Hash(String password) {
         MessageDigest md;
         String md5Hash = "";
@@ -133,7 +136,7 @@ public class UserServiceImp implements UserService {
     private void changeCodRolebyNameRole(List<UserDto> users) throws SQLException {
         Map<Integer,String> mapRoles=  roleService.getRolesMap();
         for (UserDto user: users) {
-            user.getRole().setNameRole( mapRoles.get(user.getRole().getCodRole()));
+            user.getRole().setNameRole( mapRoles.get(user.getRole().getCodRole()) );
         }
     }
 
