@@ -12,7 +12,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Service
 public class MunicipalityServicelmpl implements MunicipalityService {
     @Autowired
@@ -66,6 +69,19 @@ public class MunicipalityServicelmpl implements MunicipalityService {
             cs.setString(2,municipality.getMunicipality());
 
             cs.executeUpdate();
+        }
+    }
+
+    @Override
+    public Map<Integer, String> getMunicipalityMap() throws SQLException {
+        Map<Integer, String> mapMunicipality = new HashMap<Integer, String>();
+        try (Connection con = jdbcTemplate.getDataSource().getConnection()) {
+            ResultSet rs = con.createStatement().executeQuery(
+                    "SELECT * FROM municipio");
+            while (rs.next()) {
+                mapMunicipality.put(rs.getInt("cod__municipio"), rs.getString("nombre"));
+            }
+            return mapMunicipality;
         }
     }
 }

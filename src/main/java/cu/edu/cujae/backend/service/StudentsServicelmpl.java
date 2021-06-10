@@ -2,6 +2,8 @@ package cu.edu.cujae.backend.service;
 
 import cu.edu.cujae.backend.core.dto.*;
 
+import cu.edu.cujae.backend.core.service.CourseService;
+import cu.edu.cujae.backend.core.service.MunicipalityService;
 import cu.edu.cujae.backend.core.service.StudentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,10 +12,14 @@ import org.springframework.stereotype.Service;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 @Service
 public class StudentsServicelmpl implements StudentsService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private MunicipalityService municipalityService;
 
     @Override
     public List<StudentDto> getStudents() throws SQLException {
@@ -25,10 +31,12 @@ public class StudentsServicelmpl implements StudentsService {
                         rs.getInt("cod_estudiante"),
                         rs.getString("nombre"),
                         rs.getString("apellidos"),
-                        new GenderDto(rs.getInt("cod_sexo"),""),
-                        new MunicipalityDto(rs.getInt("cod_municipio"),"municipio")
+                        new GenderDto(rs.getInt("cod_sexo"),"nombre_sexo"),
+                        new MunicipalityDto(rs.getInt("cod_municipio"),"nombre")
                 ));
             }
+            students=llenarGender(students);
+            setMunicipalityNames(students);
             return students;
         }
     }
@@ -69,4 +77,26 @@ public class StudentsServicelmpl implements StudentsService {
             cs.executeUpdate();
         }
     }
+     public List<StudentDto> llenarGender(List<StudentDto> students)throws SQLException{
+           int i=0;
+        while (i<students.size()){
+            if(students.get(i).getGender().getCodGender()==1){
+                students.get(i).getGender().setGender("Masculino");
+            }else{
+                students.get(i).getGender().setGender("Femenino");
+            }
+            i++;
+        }
+        return students;
+     }
+     private void setMunicipalityName(StudentDto student, Map<Integer,String> mapMunicipality) {
+        student.getMunicipality().setMunicipality(mapMunicipality.get(student.getMunicipality().getCodMunicipality()));
+     }
+
+     private void setMunicipalityNames(List<StudentDto> students) throws SQLException {
+        Map<Integer,String> mapMunicipality = municipalityService.getMunicipalityMap();
+        for (StudentDto student: students) {
+            student.getMunicipality().setMunicipality( mapMunicipality.get(student.getMunicipality().getCodMunicipality()) );
+        }
+     }
 }
