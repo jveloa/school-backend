@@ -2,6 +2,7 @@ package cu.edu.cujae.backend.api.controller;
 
 import cu.edu.cujae.backend.core.dto.StudentDto;
 
+import cu.edu.cujae.backend.core.dto.SubjectDto;
 import cu.edu.cujae.backend.core.service.StudentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -43,9 +44,15 @@ public class StudentController {
         return ResponseEntity.ok("Estudiante Modificado");
     }
 
-    @DeleteMapping("/{codStudent}")
-    public ResponseEntity<String> delete(@PathVariable int codStudents) throws SQLException {
-        studentsService.deleteStudents(codStudents);
+    @DeleteMapping("{codStudent}")
+    public ResponseEntity<String> delete(@PathVariable int codStudent) throws SQLException {
+        studentsService.deleteStudents(codStudent);
         return ResponseEntity.ok("Estudiante Eliminado");
+    }
+
+    @GetMapping("/{codStudent}")
+    public ResponseEntity<StudentDto> getSubjectById(@PathVariable int codStudent) throws SQLException {
+        StudentDto subject = studentsService.getStudentById(codStudent);
+        return ResponseEntity.ok(subject);
     }
 }

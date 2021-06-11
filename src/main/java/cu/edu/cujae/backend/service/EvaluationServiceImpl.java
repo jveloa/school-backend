@@ -16,6 +16,18 @@ public class EvaluationServiceImpl implements EvaluationService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private SubjectServiceImp subjectService;
+
+    @Autowired
+    private StudentsServicelmpl studentService;
+
+    @Autowired
+    private YearServiceImp yearService;
+
+    @Autowired
+    private RangeEvaluationImpl rangeEvaluationService;
+
     @Override
     public void createEvaluation(EvaluationDto evaluation) throws SQLException {
         try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
@@ -68,10 +80,10 @@ public class EvaluationServiceImpl implements EvaluationService {
 
             while (re.next()){
                 evaluations.add(new EvaluationDto(
-                         new SubjectDto(re.getInt("cod_asignatura"))
-                        ,new StudentDto(re.getInt("cod_estudiante"))
-                        ,new YearDto(re.getInt("cod_anno"))
-                        ,new RangeEvaluationDto(re.getInt("cod_evaluacion"))
+                         subjectService.getSubjectById(re.getInt("cod_asignatura"))
+                        ,studentService.getStudentById(re.getInt("cod_estudiante"))
+                        ,yearService.getYearById(re.getInt("cod_anno"))
+                        ,rangeEvaluationService.getRangeEvaluationById(re.getInt("cod_evaluacion"))
                 ));
             }
 

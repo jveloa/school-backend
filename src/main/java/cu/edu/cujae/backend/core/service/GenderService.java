@@ -10,4 +10,5 @@ public interface GenderService {
     List<GenderDto> getGenders() throws SQLException;
     void deleteGender(int codGender) throws SQLException;
     void updateGender(GenderDto gender) throws SQLException;
+    GenderDto getGenderById(int codGender) throws SQLException;
 }

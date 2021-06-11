@@ -8,6 +8,7 @@ import java.util.List;
 public interface SubjectService {
 
     void createSubject(SubjectDto Subject) throws SQLException;
+    SubjectDto getSubjectById(int codSubject) throws SQLException;
     List<SubjectDto> getSubjects() throws SQLException;
     void deleteSubject(int codSubject) throws SQLException;
     void updateSubject(SubjectDto Subject) throws SQLException;

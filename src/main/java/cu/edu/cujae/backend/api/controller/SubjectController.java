@@ -30,6 +30,12 @@ public class SubjectController {
         return ResponseEntity.ok(subjectList);
     }
 
+    @GetMapping("/{codSubject}")
+    public ResponseEntity<SubjectDto> getSubjectById(@PathVariable int codSubject) throws SQLException {
+        SubjectDto subject = subjectService.getSubjectById(codSubject);
+        return ResponseEntity.ok(subject);
+    }
+
     @PostMapping("/")
     public ResponseEntity<String> create(@RequestBody SubjectDto subject) throws SQLException {
         subjectService.createSubject(subject);
