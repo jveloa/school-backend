@@ -43,9 +43,9 @@ public class StudentController {
         return ResponseEntity.ok("Estudiante Modificado");
     }
 
-    @DeleteMapping("/{codStudent}")
-    public ResponseEntity<String> delete(@PathVariable int codStudents) throws SQLException {
-        studentsService.deleteStudents(codStudents);
+    @DeleteMapping("{codStudent}")
+    public ResponseEntity<String> delete(@PathVariable int codStudent) throws SQLException {
+        studentsService.deleteStudents(codStudent);
         return ResponseEntity.ok("Estudiante Eliminado");
     }
 }
