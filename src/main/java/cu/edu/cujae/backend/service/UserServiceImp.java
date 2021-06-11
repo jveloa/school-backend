@@ -45,6 +45,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public void createUser(UserDto user) throws SQLException {
+        changeNameRolebyCodRole(user);
         try (Connection con = jdbcTemplate.getDataSource().getConnection()) {
             CallableStatement cs = con.prepareCall("{call create_usuario(?,?,?)}");
             cs.setString(1, user.getUsername());
@@ -56,6 +57,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public void updateUser(UserDto user) throws SQLException {
+        changeNameRolebyCodRole(user);
         try (Connection con = jdbcTemplate.getDataSource().getConnection()) {
             PreparedStatement ps = con.prepareStatement("update usuario set cod_rol = ? where cod_usuario = ?");
             ps.setInt(1, user.getRole().getCodRole());
@@ -117,26 +119,19 @@ public class UserServiceImp implements UserService {
     }
 
 
-    private String getMd5Hash(String password) {
-        MessageDigest md;
-        String md5Hash = "";
-        try {
-            md = MessageDigest.getInstance("MD5");
-            md.update(password.getBytes());
-            byte[] digest = md.digest();
-            md5Hash = DatatypeConverter
-                .printHexBinary(digest).toUpperCase();
-        } catch (NoSuchAlgorithmException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return md5Hash;
-    }
-
     private void changeCodRolebyNameRole(List<UserDto> users) throws SQLException {
         Map<Integer,String> mapRoles=  roleService.getRolesMap();
         for (UserDto user: users) {
             user.getRole().setNameRole( mapRoles.get(user.getRole().getCodRole()) );
+        }
+    }
+
+    private void changeNameRolebyCodRole(UserDto user) throws SQLException{
+        Map<Integer,String> mapRoles=  roleService.getRolesMap();
+        for (Map.Entry<Integer,String> v: mapRoles.entrySet()) {
+            if( v.getValue().equals(user.getRole().getNameRole()) ){
+                user.getRole().setCodRole((Integer) v.getKey());
+            }
         }
     }
 
