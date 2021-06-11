@@ -1,6 +1,7 @@
 package cu.edu.cujae.backend.service;
 
 import cu.edu.cujae.backend.core.dto.GenderDto;
+import cu.edu.cujae.backend.core.dto.MunicipalityDto;
 import cu.edu.cujae.backend.core.service.GenderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -64,5 +65,23 @@ public class GenderServiceImpl implements GenderService {
 
             cs.executeUpdate();
         }
+    }
+
+    @Override
+    public GenderDto getGenderById(int codGender) throws SQLException {
+        GenderDto gender = null;
+        try(Connection con = jdbcTemplate.getDataSource().getConnection()){
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM sexo where cod_sexo = ? ");
+            ps.setInt(1,codGender);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                gender = new GenderDto(
+                        rs.getInt("cod_sexo"),
+                        rs.getString("nombre_sexo")
+
+                );
+            }
+        }
+        return gender;
     }
 }

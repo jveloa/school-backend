@@ -12,5 +12,6 @@ public interface MunicipalityService {
     List<MunicipalityDto> getMunicipalities() throws SQLException;
     void deleteMunicipality(int codMunicipality) throws SQLException;
     void updateMunicipality(MunicipalityDto municipality) throws SQLException;
+    MunicipalityDto getMunicipalityById(int codMunicipality) throws SQLException;
 
 }

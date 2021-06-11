@@ -1,6 +1,7 @@
 package cu.edu.cujae.backend.service;
 
 import cu.edu.cujae.backend.core.dto.CourseDto;
+import cu.edu.cujae.backend.core.dto.GenderDto;
 import cu.edu.cujae.backend.core.dto.YearDto;
 import cu.edu.cujae.backend.core.service.CourseService;
 import cu.edu.cujae.backend.core.service.YearService;
@@ -8,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -90,6 +88,25 @@ public class YearServiceImp implements YearService {
             rs.next();
         }
 
+    }
+
+    @Override
+    public YearDto getYearById(int codYear) throws SQLException {
+        YearDto year = null;
+        try(Connection con = jdbcTemplate.getDataSource().getConnection()){
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM anno where cod_anno = ? ");
+            ps.setInt(1,codYear);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                year = new YearDto(
+                        rs.getInt("cod_anno"),
+                        rs.getInt("anno"),
+                        new CourseDto(rs.getInt("cod_curso"))
+                );
+            }
+        }
+
+        return year;
     }
 
     private void setCourseName(YearDto year, Map<Integer,String> mapCourses) {

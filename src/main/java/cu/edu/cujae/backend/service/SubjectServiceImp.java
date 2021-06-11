@@ -1,7 +1,9 @@
 package cu.edu.cujae.backend.service;
 
 
+import cu.edu.cujae.backend.core.dto.RoleDto;
 import cu.edu.cujae.backend.core.dto.SubjectDto;
+import cu.edu.cujae.backend.core.dto.UserDto;
 import cu.edu.cujae.backend.core.dto.YearDto;
 import cu.edu.cujae.backend.core.service.CourseService;
 import cu.edu.cujae.backend.core.service.SubjectService;
@@ -38,6 +40,27 @@ public class SubjectServiceImp implements SubjectService {
             cs.executeUpdate();
         }
     }
+
+    @Override
+    public SubjectDto getSubjectById(int codSubject) throws SQLException {
+        SubjectDto subject = null;
+        try(Connection con = jdbcTemplate.getDataSource().getConnection()){
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM asignatura where cod_asignatura = ? ");
+            ps.setInt(1,codSubject);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                subject = new SubjectDto(
+                        rs.getInt("cod_asignatura"),
+                        rs.getInt("horas"),
+                        rs.getString("nombre"),
+                        new YearDto(rs.getInt("cod_anno"))
+                );
+            }
+        }
+
+        return subject;
+    }
+
 
     @Override
     public List<SubjectDto> getSubjects() throws SQLException {

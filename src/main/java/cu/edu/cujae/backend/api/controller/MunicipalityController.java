@@ -1,6 +1,7 @@
 package cu.edu.cujae.backend.api.controller;
 
 import cu.edu.cujae.backend.core.dto.MunicipalityDto;
+import cu.edu.cujae.backend.core.dto.SubjectDto;
 import cu.edu.cujae.backend.core.service.MunicipalityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -37,5 +38,11 @@ public class MunicipalityController {
     public ResponseEntity<String> delete(@PathVariable int codMunicipality) throws SQLException {
         municipalityService.deleteMunicipality(codMunicipality);
         return ResponseEntity.ok("Municipality Deleted");
+    }
+
+    @GetMapping("/{codMunicipality}")
+    public ResponseEntity<MunicipalityDto> getSubjectById(@PathVariable int codMunicipality) throws SQLException {
+        MunicipalityDto municipality = municipalityService.getMunicipalityById(codMunicipality);
+        return ResponseEntity.ok(municipality);
     }
 }

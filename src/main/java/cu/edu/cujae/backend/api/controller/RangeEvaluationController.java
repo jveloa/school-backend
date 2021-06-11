@@ -1,6 +1,7 @@
 package cu.edu.cujae.backend.api.controller;
 
 import cu.edu.cujae.backend.core.dto.RangeEvaluationDto;
+import cu.edu.cujae.backend.core.dto.YearDto;
 import cu.edu.cujae.backend.core.service.RangeEvaluationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,5 +39,11 @@ public class RangeEvaluationController {
     public ResponseEntity<String> delete(@PathVariable int codEvaluation) throws SQLException {
         rangeEvaluationService.deleteEvaluation(codEvaluation);
         return ResponseEntity.ok("Evaluation Deleted");
+    }
+
+    @GetMapping("/{codEvaluation}")
+    public ResponseEntity<RangeEvaluationDto> getRangeEvaluationById(@PathVariable int codEvaluation) throws SQLException {
+        RangeEvaluationDto rangeEvaluation = rangeEvaluationService.getRangeEvaluationById(codEvaluation);
+        return ResponseEntity.ok(rangeEvaluation);
     }
 }

@@ -1,15 +1,15 @@
 package cu.edu.cujae.backend.service;
 
+import cu.edu.cujae.backend.core.dto.CourseDto;
 import cu.edu.cujae.backend.core.dto.RangeEvaluationDto;
+import cu.edu.cujae.backend.core.dto.YearDto;
 import cu.edu.cujae.backend.core.service.RangeEvaluationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,6 +70,23 @@ public class RangeEvaluationImpl implements RangeEvaluationService {
             cs.setString(2, evaluation.getEvaluation());
             cs.executeUpdate();
         }
+    }
+
+    @Override
+    public RangeEvaluationDto getRangeEvaluationById(int codEvaluation) throws SQLException {
+        RangeEvaluationDto rangeEvaluation = null;
+        try(Connection con = jdbcTemplate.getDataSource().getConnection()){
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM evaluacion where cod_evaluacion = ? ");
+            ps.setInt(1,codEvaluation);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                rangeEvaluation = new RangeEvaluationDto(
+                        rs.getInt("cod_evaluacion"),
+                        rs.getString("evaluacion")
+                );
+            }
+        }
+        return rangeEvaluation;
     }
 }
 

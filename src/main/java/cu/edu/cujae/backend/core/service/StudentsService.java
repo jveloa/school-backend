@@ -12,5 +12,6 @@ public interface StudentsService {
     List<StudentDto> getStudents() throws SQLException;
     void deleteStudents(int codStudents) throws SQLException;
     void updateStudents(StudentDto student) throws SQLException;
+    StudentDto getStudentById(int codStudent) throws SQLException;
 
 }
