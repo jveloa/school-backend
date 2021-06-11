@@ -2,7 +2,6 @@ package cu.edu.cujae.backend.service;
 
 
 import cu.edu.cujae.backend.core.dto.MunicipalityDto;
-import cu.edu.cujae.backend.core.dto.StudentDto;
 import cu.edu.cujae.backend.core.service.MunicipalityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,7 +9,10 @@ import org.springframework.stereotype.Service;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Service
 public class MunicipalityServicelmpl implements MunicipalityService {
     @Autowired
@@ -83,5 +85,18 @@ public class MunicipalityServicelmpl implements MunicipalityService {
             }
         }
         return municipality;
+    }
+
+    @Override
+    public Map<Integer, String> getMunicipalityMap() throws SQLException {
+        Map<Integer, String> mapMunicipality = new HashMap<Integer, String>();
+        try (Connection con = jdbcTemplate.getDataSource().getConnection()) {
+            ResultSet rs = con.createStatement().executeQuery(
+                    "SELECT * FROM municipio");
+            while (rs.next()) {
+                mapMunicipality.put(rs.getInt("cod__municipio"), rs.getString("nombre"));
+            }
+            return mapMunicipality;
+        }
     }
 }

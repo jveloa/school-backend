@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 @Service
 public class StudentsServicelmpl implements StudentsService {
     @Autowired
@@ -35,6 +37,8 @@ public class StudentsServicelmpl implements StudentsService {
                         new MunicipalityDto(rs.getInt("cod_municipio"),"municipio")
                 ));
             }
+            students=llenarGender(students);
+            setMunicipalityNames(students);
             return students;
         }
     }
@@ -99,4 +103,26 @@ public class StudentsServicelmpl implements StudentsService {
         return student;
     }
 
+     public List<StudentDto> llenarGender(List<StudentDto> students)throws SQLException{
+           int i=0;
+        while (i<students.size()){
+            if(students.get(i).getGender().getCodGender()==1){
+                students.get(i).getGender().setGender("Masculino");
+            }else{
+                students.get(i).getGender().setGender("Femenino");
+            }
+            i++;
+        }
+        return students;
+     }
+     private void setMunicipalityName(StudentDto student, Map<Integer,String> mapMunicipality) {
+        student.getMunicipality().setMunicipality(mapMunicipality.get(student.getMunicipality().getCodMunicipality()));
+     }
+
+     private void setMunicipalityNames(List<StudentDto> students) throws SQLException {
+        Map<Integer,String> mapMunicipality = municipalityService.getMunicipalityMap();
+        for (StudentDto student: students) {
+            student.getMunicipality().setMunicipality( mapMunicipality.get(student.getMunicipality().getCodMunicipality()) );
+        }
+     }
 }
