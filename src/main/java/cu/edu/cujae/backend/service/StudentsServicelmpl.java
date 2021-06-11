@@ -25,7 +25,7 @@ public class StudentsServicelmpl implements StudentsService {
     public List<StudentDto> getStudents() throws SQLException {
         List<StudentDto> students = new ArrayList<>();
         try (Connection con = jdbcTemplate.getDataSource().getConnection()) {
-            ResultSet rs = con.createStatement().executeQuery("SELECT * FROM estudiante");
+            ResultSet rs = con.createStatement().executeQuery("SELECT * FROM estudiante ORDER BY cod_estudiante");
             while (rs.next()) {
                 students.add(new StudentDto(
                         rs.getInt("cod_estudiante"),
@@ -47,8 +47,8 @@ public class StudentsServicelmpl implements StudentsService {
             CallableStatement cs = con.prepareCall("{call create_estudiante(?,?,?,?)}");
             cs.setString(1, students.getName());
             cs.setString(2, students.getLastName());
-            cs.setInt(3, students.getGender().getCodGender());
-            cs.setInt(4, students.getMunicipality().getCodMunicipality());
+            cs.setInt(4, students.getGender().getCodGender());
+            cs.setInt(3, students.getMunicipality().getCodMunicipality());
             cs.executeUpdate();
         }
     }
@@ -69,11 +69,10 @@ public class StudentsServicelmpl implements StudentsService {
 
 
     @Override
-    public void deleteStudents(int codstudents) throws SQLException {
+    public void deleteStudents(int codStudents) throws SQLException {
         try (Connection con = jdbcTemplate.getDataSource().getConnection()) {
-            CallableStatement cs = con.prepareCall(
-                    "{call delete_estudiante(?)}");
-            cs.setInt(1, codstudents);
+            CallableStatement cs = con.prepareCall( "{call delete_estudiante(?)}");
+            cs.setInt(1, codStudents);
             cs.executeUpdate();
         }
     }
