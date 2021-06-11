@@ -4,7 +4,7 @@ public class GenderDto {
     private int codGender;
     private String gender;
 
-    public GenderDto() {
+    public GenderDto(int cod_municipio) {
     }
 
     public GenderDto(int codGender, String gender) {

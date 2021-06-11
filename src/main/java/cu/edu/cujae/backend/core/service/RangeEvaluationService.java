@@ -11,5 +11,5 @@ public interface RangeEvaluationService {
     List<RangeEvaluationDto> getRangeEvaluations() throws SQLException;
     void deleteEvaluation(int codEvaluation) throws SQLException;
     void updateEvaluation(RangeEvaluationDto evaluation) throws SQLException;
-
+    RangeEvaluationDto getRangeEvaluationById(int codEvaluation) throws SQLException;
 }

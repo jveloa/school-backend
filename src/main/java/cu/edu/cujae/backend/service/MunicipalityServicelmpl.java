@@ -2,15 +2,13 @@ package cu.edu.cujae.backend.service;
 
 
 import cu.edu.cujae.backend.core.dto.MunicipalityDto;
+import cu.edu.cujae.backend.core.dto.StudentDto;
 import cu.edu.cujae.backend.core.service.MunicipalityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 @Service
@@ -67,5 +65,23 @@ public class MunicipalityServicelmpl implements MunicipalityService {
 
             cs.executeUpdate();
         }
+    }
+
+    @Override
+    public MunicipalityDto getMunicipalityById(int codMunicipality) throws SQLException {
+        MunicipalityDto municipality = null;
+        try(Connection con = jdbcTemplate.getDataSource().getConnection()){
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM municipio where cod__municipio = ? ");
+            ps.setInt(1,codMunicipality);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                municipality = new MunicipalityDto(
+                        rs.getInt("cod__municipio"),
+                        rs.getString("nombre")
+
+                );
+            }
+        }
+        return municipality;
     }
 }

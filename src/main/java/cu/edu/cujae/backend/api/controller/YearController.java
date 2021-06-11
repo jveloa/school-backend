@@ -1,5 +1,6 @@
 package cu.edu.cujae.backend.api.controller;
 
+import cu.edu.cujae.backend.core.dto.MunicipalityDto;
 import cu.edu.cujae.backend.core.dto.YearDto;
 import cu.edu.cujae.backend.core.service.YearService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,11 @@ public class YearController {
     public ResponseEntity<String> delete(@PathVariable int codYear) throws SQLException {
         yearService.deleteYear(codYear);
         return ResponseEntity.ok("Año eliminado");
+    }
+
+    @GetMapping("/{codYear}")
+    public ResponseEntity<YearDto> getYearById(@PathVariable int codYear) throws SQLException {
+        YearDto year = yearService.getYearById(codYear);
+        return ResponseEntity.ok(year);
     }
 }
