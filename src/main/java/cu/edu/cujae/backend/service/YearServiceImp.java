@@ -74,11 +74,8 @@ public class YearServiceImp implements YearService {
     public void setData(YearDto year, Map<Integer,String> mapCourses, ResultSet rs) throws SQLException {
         CourseDto courseDto = new CourseDto();
         rs.first();
-        System.out.print("-------------"+ year.getCodYear() +"-----------\n");
         while(true) {
-            System.out.print(rs.getInt("cod_anno") + "\n");
-
-            if (rs.getInt("cod_anno") == year.getCodYear()) {
+                if (rs.getInt("cod_anno") == year.getCodYear()) {
                 year.setYearNumber(rs.getInt("anno"));
                 courseDto.setCodCourse(rs.getInt("cod_curso"));
                 year.setCourse(courseDto);

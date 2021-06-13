@@ -2,6 +2,8 @@ package cu.edu.cujae.backend.service;
 
 
 import cu.edu.cujae.backend.core.dto.*;
+import cu.edu.cujae.backend.core.dto.SubjectDto;
+import cu.edu.cujae.backend.core.dto.YearDto;
 import cu.edu.cujae.backend.core.service.CourseService;
 import cu.edu.cujae.backend.core.service.SubjectService;
 import cu.edu.cujae.backend.core.service.YearService;
@@ -30,6 +32,10 @@ public class SubjectServiceImp implements SubjectService {
     @Override
     public void createSubject(SubjectDto subject) throws SQLException {
         try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
+            ResultSet rs = conn.createStatement().executeQuery(
+                    "Select cod_anno from anno where cod_curso = "+ subject.getYear().getCourse().getCodCourse() +
+                            "and anno =" + subject.getYear().getYearNumber());
+            rs.next();
             CallableStatement cs = conn.prepareCall("{call create_asignatura(?,?,?)}");
             cs.setString(1, subject.getNameSubject());
             cs.setInt(2, subject.getHours());
@@ -88,11 +94,15 @@ public class SubjectServiceImp implements SubjectService {
     @Override
     public void updateSubject(SubjectDto subject) throws SQLException {
         try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
+            ResultSet rs = conn.createStatement().executeQuery(
+                    "Select cod_anno from anno where cod_curso = "+ subject.getYear().getCourse().getCodCourse() +
+                            "and anno =" + subject.getYear().getYearNumber());
+            rs.next();
             CallableStatement cs = conn.prepareCall("{call update_asignatura(?,?,?,?)}");
             cs.setInt(1, subject.getCodSubject());
             cs.setString(2, subject.getNameSubject());
             cs.setInt(3, subject.getHours());
-            cs.setInt(4, subject.getYear().getCodYear());
+            cs.setInt(4, rs.getInt("cod_anno"));
             cs.executeUpdate();
         }
     }
@@ -162,6 +172,4 @@ public class SubjectServiceImp implements SubjectService {
         }
 
     }
-
-
 }
