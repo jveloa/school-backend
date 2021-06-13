@@ -2,15 +2,13 @@ package cu.edu.cujae.backend.service;
 
 import com.sun.org.apache.bcel.internal.generic.Select;
 import cu.edu.cujae.backend.core.dto.CourseDto;
+import cu.edu.cujae.backend.core.dto.YearDto;
 import cu.edu.cujae.backend.core.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -66,6 +64,25 @@ public class CourseServiceImp implements CourseService {
             cs.setString(2, course.getCourse());
             cs.executeUpdate();
         }
+    }
+
+    @Override
+    public CourseDto getCourseById(int codCourse) throws SQLException {
+        CourseDto course = null;
+        try(Connection con = jdbcTemplate.getDataSource().getConnection()){
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM curso where cod_curso = ? ");
+            ps.setInt(1,codCourse);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                course = new CourseDto(
+                        rs.getInt("cod_curso"),
+                        rs.getString("curso")
+
+                );
+            }
+        }
+
+        return course;
     }
 
     @Override

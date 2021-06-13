@@ -1,10 +1,7 @@
 package cu.edu.cujae.backend.service;
 
 
-import cu.edu.cujae.backend.core.dto.RoleDto;
-import cu.edu.cujae.backend.core.dto.SubjectDto;
-import cu.edu.cujae.backend.core.dto.UserDto;
-import cu.edu.cujae.backend.core.dto.YearDto;
+import cu.edu.cujae.backend.core.dto.*;
 import cu.edu.cujae.backend.core.service.CourseService;
 import cu.edu.cujae.backend.core.service.SubjectService;
 import cu.edu.cujae.backend.core.service.YearService;
@@ -53,7 +50,7 @@ public class SubjectServiceImp implements SubjectService {
                         rs.getInt("cod_asignatura"),
                         rs.getInt("horas"),
                         rs.getString("nombre"),
-                        new YearDto(rs.getInt("cod_anno"))
+                       yearService.getYearById(rs.getInt("cod_anno"))
                 );
             }
         }
@@ -100,6 +97,60 @@ public class SubjectServiceImp implements SubjectService {
         }
     }
 
+    @Override
+    public List<SubjectDto> getSubjectsByStudent(int codStudent) throws SQLException {
+        List<SubjectDto> subjects = new ArrayList<SubjectDto>();
+        try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
+            conn.setAutoCommit(false);
+            CallableStatement cs = conn.prepareCall("{call asignaturas_por_estudiante_2(?, ?)}");
+            cs.setNull(1, Types.REF, "refcursor");
+            cs.registerOutParameter(1, Types.REF_CURSOR);
+            cs.setInt(2, codStudent);
+            cs.execute();
+            ResultSet re = (ResultSet) cs.getObject(1);
+
+            while (re.next()) {
+                subjects.add(new SubjectDto(
+
+                        re.getInt("cod_asignatura"),
+                        re.getInt("horas"),
+                        re.getString("nombre"),
+                        new YearDto(re.getInt("cod_anno"))
+
+                ));
+            }
+            return subjects;
+        }
+    }
+
+    @Override
+    public List<SubjectDto> getSubjectsEvaluatedByStudent(int codStudent) throws SQLException {
+        List<SubjectDto> subjects = new ArrayList<SubjectDto>();
+        try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
+            conn.setAutoCommit(false);
+            CallableStatement cs = conn.prepareCall("{call asignaturas_con_notas_por_estudiante(?, ?)}");
+            cs.setNull(1, Types.REF, "refcursor");
+            cs.registerOutParameter(1, Types.REF_CURSOR);
+            cs.setInt(2, codStudent);
+            cs.execute();
+            ResultSet re = (ResultSet) cs.getObject(1);
+
+            while (re.next()) {
+                subjects.add(new SubjectDto(
+
+                        re.getInt("cod_asignatura"),
+                        re.getInt("horas"),
+                        re.getString("nombre"),
+                        new YearDto(re.getInt("cod_anno"))
+
+                ));
+            }
+            return subjects;
+        }
+    }
+
+
+
     private void setYearData(List<SubjectDto> subjects) throws SQLException {
         Connection conn = jdbcTemplate.getDataSource().getConnection();
         Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -111,4 +162,6 @@ public class SubjectServiceImp implements SubjectService {
         }
 
     }
+
+
 }

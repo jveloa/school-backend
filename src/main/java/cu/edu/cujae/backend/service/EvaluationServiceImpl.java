@@ -30,9 +30,8 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     @Override
     public void createEvaluation(EvaluationDto evaluation) throws SQLException {
-        try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
-            CallableStatement cs = conn.prepareCall(
-                    "{call create_nota(?, ?, ?, ?)}");
+        try (Connection con = jdbcTemplate.getDataSource().getConnection()) {
+            PreparedStatement cs = con.prepareStatement("insert into nota values(?,?,?,?)");
             cs.setInt(1, evaluation.getSubject().getCodSubject());
             cs.setInt(2, evaluation.getStudent().getCodStudent());
             cs.setInt(3, evaluation.getYear().getCodYear());
@@ -55,9 +54,9 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     @Override
     public void updateEvaluation(EvaluationDto evaluation) throws SQLException {
-        try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
-            CallableStatement cs = conn.prepareCall(
-                    "{call update_evaluation(?, ?, ?, ?)}");
+        try (Connection con = jdbcTemplate.getDataSource().getConnection()) {
+            PreparedStatement cs = con.prepareStatement(
+                    "update nota set cod_evaluacion = ? where cod_asignatura = ? and cod_estudiante = ? and cod_anno = ?");
             cs.setInt(1, evaluation.getRangeEvaluation().getCodEvaluation());
             cs.setInt(2, evaluation.getSubject().getCodSubject());
             cs.setInt(3, evaluation.getStudent().getCodStudent());

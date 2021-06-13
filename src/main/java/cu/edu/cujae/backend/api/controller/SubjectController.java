@@ -36,6 +36,18 @@ public class SubjectController {
         return ResponseEntity.ok(subject);
     }
 
+    @GetMapping("/student/{codStudent}")
+    public ResponseEntity<List<SubjectDto>> getSubjectByStudent(@PathVariable int codStudent) throws SQLException {
+        List<SubjectDto> subjects = subjectService.getSubjectsByStudent(codStudent);
+        return ResponseEntity.ok(subjects);
+    }
+
+    @GetMapping("evaluated/student/{codStudent}")
+    public ResponseEntity<List<SubjectDto>> getSubjecsEvaluatedtByStudent(@PathVariable int codStudent) throws SQLException {
+        List<SubjectDto> subjects = subjectService.getSubjectsEvaluatedByStudent(codStudent);
+        return ResponseEntity.ok(subjects);
+    }
+
     @PostMapping("/")
     public ResponseEntity<String> create(@RequestBody SubjectDto subject) throws SQLException {
         subjectService.createSubject(subject);

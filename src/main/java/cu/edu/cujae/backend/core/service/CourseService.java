@@ -12,5 +12,6 @@ public interface CourseService {
     List<CourseDto> getCourses() throws SQLException;
     void deleteCourse(int codCourse) throws SQLException;
     void updateCourse(CourseDto Course) throws SQLException;
+    CourseDto getCourseById(int codCourse) throws SQLException;
 
 }
