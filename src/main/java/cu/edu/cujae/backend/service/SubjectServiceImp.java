@@ -1,9 +1,7 @@
 package cu.edu.cujae.backend.service;
 
 
-import cu.edu.cujae.backend.core.dto.RoleDto;
 import cu.edu.cujae.backend.core.dto.SubjectDto;
-import cu.edu.cujae.backend.core.dto.UserDto;
 import cu.edu.cujae.backend.core.dto.YearDto;
 import cu.edu.cujae.backend.core.service.CourseService;
 import cu.edu.cujae.backend.core.service.SubjectService;
@@ -44,16 +42,16 @@ public class SubjectServiceImp implements SubjectService {
     @Override
     public SubjectDto getSubjectById(int codSubject) throws SQLException {
         SubjectDto subject = null;
-        try(Connection con = jdbcTemplate.getDataSource().getConnection()){
+        try (Connection con = jdbcTemplate.getDataSource().getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM asignatura where cod_asignatura = ? ");
-            ps.setInt(1,codSubject);
+            ps.setInt(1, codSubject);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 subject = new SubjectDto(
-                        rs.getInt("cod_asignatura"),
-                        rs.getInt("horas"),
-                        rs.getString("nombre"),
-                        new YearDto(rs.getInt("cod_anno"))
+                    rs.getInt("cod_asignatura"),
+                    rs.getInt("horas"),
+                    rs.getString("nombre"),
+                    new YearDto(rs.getInt("cod_anno"))
                 );
             }
         }
@@ -65,15 +63,17 @@ public class SubjectServiceImp implements SubjectService {
     @Override
     public List<SubjectDto> getSubjects() throws SQLException {
         List<SubjectDto> subjectList = new ArrayList<SubjectDto>();
-        ResultSet rs = jdbcTemplate.getDataSource().getConnection().createStatement().
+        try (Connection con = jdbcTemplate.getDataSource().getConnection()) {
+            ResultSet rs = con.createStatement().
                 executeQuery("SELECT * from asignatura");
-        while (rs.next()) {
-            subjectList.add(new SubjectDto(
+            while (rs.next()) {
+                subjectList.add(new SubjectDto(
                     rs.getInt("cod_asignatura"),
                     rs.getInt("horas"),
                     rs.getString("nombre"),
                     new YearDto(rs.getInt("cod_anno"))
-            ));
+                ));
+            }
         }
         setYearData(subjectList);
         return subjectList;
@@ -101,14 +101,14 @@ public class SubjectServiceImp implements SubjectService {
     }
 
     private void setYearData(List<SubjectDto> subjects) throws SQLException {
-        Connection conn = jdbcTemplate.getDataSource().getConnection();
-        Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-        ResultSet rs = stmt.
+        try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
+            Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = stmt.
                 executeQuery("SELECT * from anno");
-        Map<Integer, String> mapCourses = courseService.getCoursesMap();
-        for (SubjectDto subject : subjects) {
-            yearService.setData(subject.getYear(), mapCourses, rs);
+            Map<Integer, String> mapCourses = courseService.getCoursesMap();
+            for (SubjectDto subject : subjects) {
+                yearService.setData(subject.getYear(), mapCourses, rs);
+            }
         }
-
     }
 }
