@@ -42,13 +42,13 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     @Override
     public void deleteEvaluation(int codSubject, int codStudent, int codYear) throws SQLException {
-        try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
-            CallableStatement cs =conn.prepareCall(
-                    "{call delete_nota(?, ?, ?)}");
-
+        try (Connection con = jdbcTemplate.getDataSource().getConnection()) {
+            PreparedStatement cs = con.prepareStatement(
+                    "delete from nota where cod_asignatura = ? and cod_estudiante = ? and cod_anno = ?");
             cs.setInt(1, codSubject);
             cs.setInt(2, codStudent);
             cs.setInt(3, codYear);
+            cs.executeUpdate();
         }
     }
 

@@ -36,7 +36,7 @@ public class EvaluationController {
     }
 
     @DeleteMapping("/{codSubject}/{codStudent}/{codYear}")
-    public ResponseEntity<String> delete(@PathVariable int codSubjetc, @PathVariable int codStudent, @PathVariable int codYear ) throws SQLException {
+    public ResponseEntity<String> delete(@PathVariable("codSubject") int codSubjetc, @PathVariable("codStudent") int codStudent, @PathVariable("codYear") int codYear ) throws SQLException {
         evaluationService.deleteEvaluation(codSubjetc, codStudent, codYear);
         return ResponseEntity.ok("Evaluation Deleted");
     }
