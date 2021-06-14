@@ -39,7 +39,7 @@ public class SubjectServiceImp implements SubjectService {
             CallableStatement cs = conn.prepareCall("{call create_asignatura(?,?,?)}");
             cs.setString(1, subject.getNameSubject());
             cs.setInt(2, subject.getHours());
-            cs.setInt(3, subject.getYear().getCodYear());
+            cs.setInt(3, rs.getInt("cod_anno"));
             cs.executeUpdate();
         }
     }
@@ -68,15 +68,17 @@ public class SubjectServiceImp implements SubjectService {
     @Override
     public List<SubjectDto> getSubjects() throws SQLException {
         List<SubjectDto> subjectList = new ArrayList<SubjectDto>();
-        ResultSet rs = jdbcTemplate.getDataSource().getConnection().createStatement().
-                executeQuery("SELECT * from asignatura");
-        while (rs.next()) {
-            subjectList.add(new SubjectDto(
-                    rs.getInt("cod_asignatura"),
-                    rs.getInt("horas"),
-                    rs.getString("nombre"),
-                    new YearDto(rs.getInt("cod_anno"))
-            ));
+        try (Connection con = jdbcTemplate.getDataSource().getConnection()) {
+            ResultSet rs = con.createStatement().
+                    executeQuery("SELECT * from asignatura");
+            while (rs.next()) {
+                subjectList.add(new SubjectDto(
+                        rs.getInt("cod_asignatura"),
+                        rs.getInt("horas"),
+                        rs.getString("nombre"),
+                        new YearDto(rs.getInt("cod_anno"))
+                ));
+            }
         }
         setYearData(subjectList);
         return subjectList;
@@ -162,14 +164,14 @@ public class SubjectServiceImp implements SubjectService {
 
 
     private void setYearData(List<SubjectDto> subjects) throws SQLException {
-        Connection conn = jdbcTemplate.getDataSource().getConnection();
-        Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-        ResultSet rs = stmt.
-                executeQuery("SELECT * from anno");
-        Map<Integer, String> mapCourses = courseService.getCoursesMap();
-        for (SubjectDto subject : subjects) {
-            yearService.setData(subject.getYear(), mapCourses, rs);
+        try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
+            Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = stmt.
+                    executeQuery("SELECT * from anno");
+            Map<Integer, String> mapCourses = courseService.getCoursesMap();
+            for (SubjectDto subject : subjects) {
+                yearService.setData(subject.getYear(), mapCourses, rs);
+            }
         }
-
     }
 }
