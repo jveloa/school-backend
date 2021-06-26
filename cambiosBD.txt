@@ -6,3 +6,16 @@ Haganlo asi como se ve aqui, después alquien coje las 4 BD y hace los cambios d
 
 
 -agregue la funcion notas_por_estudiante(Nestor)
+-Arreglar funcion delete_grupo(Giovanni):
+CREATE OR REPLACE FUNCTION public.delete_grupo(integer)
+  RETURNS void AS
+$BODY$
+
+update registro set cod_grupo = null where cod_grupo = $1
+;
+delete from grupo where cod_grupo = $1
+$BODY$
+  LANGUAGE sql VOLATILE
+  COST 100;
+ALTER FUNCTION public.delete_grupo(integer)
+  OWNER TO postgres;
