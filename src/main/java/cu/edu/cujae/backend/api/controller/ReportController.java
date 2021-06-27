@@ -1,6 +1,6 @@
 package cu.edu.cujae.backend.api.controller;
 
-import cu.edu.cujae.backend.core.dto.reportDto.StudentForGroupDto;
+import cu.edu.cujae.backend.core.dto.reportDto.StudentsByGroupDto;
 import cu.edu.cujae.backend.core.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +18,9 @@ public class ReportController {
     @Autowired
     private ReportService reportService;
 
-    @GetMapping("/")
-    public ResponseEntity<List<StudentForGroupDto>> getStudentForGroup() throws SQLException {
-        List<StudentForGroupDto> list = reportService.getStudentForGroup();
+    @GetMapping("/studentsByGroup")
+    public ResponseEntity<List<StudentsByGroupDto>> getStudentsByGroup() throws SQLException {
+        List<StudentsByGroupDto> list = reportService.getStudentsbyGroup();
         return ResponseEntity.ok(list);
     }
 }
