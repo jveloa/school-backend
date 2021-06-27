@@ -1,0 +1,26 @@
+package cu.edu.cujae.backend.api.controller;
+
+import cu.edu.cujae.backend.core.dto.reportDto.StudentForGroupDto;
+import cu.edu.cujae.backend.core.service.ReportService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.sql.SQLException;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/v1/reports")
+public class ReportController {
+
+    @Autowired
+    private ReportService reportService;
+
+    @GetMapping("/")
+    public ResponseEntity<List<StudentForGroupDto>> getStudentForGroup() throws SQLException {
+        List<StudentForGroupDto> list = reportService.getStudentForGroup();
+        return ResponseEntity.ok(list);
+    }
+}
