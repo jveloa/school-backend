@@ -1,6 +1,7 @@
 package cu.edu.cujae.backend.api.controller;
 
 import cu.edu.cujae.backend.core.dto.reportDto.StudentsByGroupDto;
+import cu.edu.cujae.backend.core.dto.reportDto.SubjectsByYearDto;
 import cu.edu.cujae.backend.core.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,12 @@ public class ReportController {
     @GetMapping("/studentsByGroup")
     public ResponseEntity<List<StudentsByGroupDto>> getStudentsByGroup() throws SQLException {
         List<StudentsByGroupDto> list = reportService.getStudentsbyGroup();
+        return ResponseEntity.ok(list);
+    }
+
+    @GetMapping("/subjectsByYear")
+    public ResponseEntity<List<SubjectsByYearDto>> getSubjectsByYear() throws SQLException{
+        List<SubjectsByYearDto> list = reportService.getSubjectsByYear();
         return ResponseEntity.ok(list);
     }
 }
