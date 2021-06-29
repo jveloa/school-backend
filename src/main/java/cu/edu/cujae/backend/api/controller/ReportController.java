@@ -34,7 +34,7 @@ public class ReportController {
         return ResponseEntity.ok(list);
     }
 
-    @GetMapping("/evaByGroup")
+    @GetMapping("/evalByGroup")
     public ResponseEntity<List<EvalByGroupDto>> getEvalByGroup() throws SQLException{
         List<EvalByGroupDto> list = reportService.getEvalByGroupDtoList();
         return ResponseEntity.ok(list);
