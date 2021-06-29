@@ -43,6 +43,12 @@ public class GroupController {
         return ResponseEntity.ok("Grupo eliminado");
     }
 
+    @GetMapping("/isAssignmentsGroup/{codGroup}")
+    public ResponseEntity<Boolean> isAssignmentsGroup(@PathVariable int codGroup) throws SQLException{
+        Boolean is = groupService.isAssignmentsGroup(codGroup);
+        return ResponseEntity.ok(is);
+    }
+
 }
 
 

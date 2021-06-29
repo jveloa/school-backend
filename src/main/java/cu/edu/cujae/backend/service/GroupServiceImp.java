@@ -82,6 +82,21 @@ public class GroupServiceImp implements GroupService {
         }
     }
 
+    @Override
+    public boolean isAssignmentsGroup(int codGroup) throws SQLException {
+        boolean isAssignments;
+        List<Integer> intList = new ArrayList<>();
+        try (Connection con = jdbcTemplate.getDataSource().getConnection()){
+            con.setAutoCommit(false);
+            CallableStatement cs = con.prepareCall("{call is_asignaciones_grupo(?,?)}");
+            cs.setInt(1,codGroup);
+            cs.setNull(2,Types.REF,"refcursor");
+            cs.registerOutParameter(2,Types.REF_CURSOR);
+            cs.execute();
+            ResultSet rs = (ResultSet) cs.getObject(2);
+            return rs.next() ? true : false;
+        }
+    }
 
     private void setYearData(List< GroupDto > groups) throws SQLException {
             try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
