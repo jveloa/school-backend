@@ -7,9 +7,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface GroupService {
-    List<GroupDto> getGroupList() throws SQLException;
+    List<GroupDto> getGroupsList() throws SQLException;
     void createGroup(GroupDto group) throws SQLException;
     void deleteGroup(int codGroup) throws SQLException;
+    List<GroupDto> getGroupsLastCourse() throws SQLException;
 
 
 }

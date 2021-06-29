@@ -21,7 +21,13 @@ public class GroupController {
 
     @GetMapping("/")
     public ResponseEntity<List<GroupDto>> getGroup() throws SQLException {
-        List<GroupDto> groupList = groupService.getGroupList();
+        List<GroupDto> groupList = groupService.getGroupsList();
+        return ResponseEntity.ok(groupList);
+    }
+
+    @GetMapping("/groupsLastCourse")
+    public  ResponseEntity<List<GroupDto>> getGroupLastCourse() throws SQLException{
+        List<GroupDto> groupList = groupService.getGroupsLastCourse();
         return ResponseEntity.ok(groupList);
     }
 
