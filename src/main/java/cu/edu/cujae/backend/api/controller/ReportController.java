@@ -1,5 +1,6 @@
 package cu.edu.cujae.backend.api.controller;
 
+import cu.edu.cujae.backend.core.dto.reportDto.EvalByGroupDto;
 import cu.edu.cujae.backend.core.dto.reportDto.StudentLadderDto;
 import cu.edu.cujae.backend.core.dto.reportDto.StudentsByGroupDto;
 import cu.edu.cujae.backend.core.dto.reportDto.SubjectsByYearDto;
@@ -32,6 +33,13 @@ public class ReportController {
         List<SubjectsByYearDto> list = reportService.getSubjectsByYear();
         return ResponseEntity.ok(list);
     }
+
+    @GetMapping("/evaByGroup")
+    public ResponseEntity<List<EvalByGroupDto>> getEvalByGroup() throws SQLException{
+        List<EvalByGroupDto> list = reportService.getEvalByGroupDtoList();
+        return ResponseEntity.ok(list);
+    }
+
 
     @GetMapping("/studentLadder/{curso}/{anno}")
     public ResponseEntity<List<StudentLadderDto>> getStudentLadder(@PathVariable ("curso") String curso, @PathVariable("anno") int anno) throws SQLException{

@@ -1,5 +1,6 @@
 package cu.edu.cujae.backend.service;
 
+import cu.edu.cujae.backend.core.dto.reportDto.EvalByGroupDto;
 import cu.edu.cujae.backend.core.dto.reportDto.StudentLadderDto;
 import cu.edu.cujae.backend.core.dto.reportDto.StudentsByGroupDto;
 import cu.edu.cujae.backend.core.dto.reportDto.SubjectsByYearDto;
@@ -90,5 +91,32 @@ public class ReportServiceImpl implements ReportService {
 
         }
         return studentLadderDtoList;
+    }
+
+    @Override
+    public List<EvalByGroupDto> getEvalByGroupDtoList() throws SQLException {
+        List<EvalByGroupDto> evalByGroupDtoList = new ArrayList<EvalByGroupDto>();
+        try(Connection con = jdbcTemplate.getDataSource().getConnection()){
+            con.setAutoCommit(false);
+            CallableStatement cs = con.prepareCall("{call reporte_evaluaciones_por_grupo(?)}");
+            cs.setNull(1,Types.REF,"refcursor");
+            cs.registerOutParameter(1,Types.REF_CURSOR);
+            cs.execute();
+            ResultSet rs = (ResultSet) cs.getObject(1);
+            while(rs.next()){
+                evalByGroupDtoList.add(new EvalByGroupDto(
+                        rs.getString("curso"),
+                        rs.getInt("anno"),
+                        rs.getInt("numero"),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getString("apellidos"),
+                        rs.getString("evaluacion")
+                        )
+                );
+            }
+
+        }
+        return evalByGroupDtoList;
     }
 }
