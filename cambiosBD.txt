@@ -19,3 +19,33 @@ $BODY$
   COST 100;
 ALTER FUNCTION public.delete_grupo(integer)
   OWNER TO postgres;
+- Arreglar funcion escalafon_anual
+
+CREATE OR REPLACE FUNCTION public.escalafon_anual(
+    refcursor,
+    character varying,
+    integer)
+  RETURNS refcursor AS
+$BODY$
+
+begin
+
+open $1 for select distinct estudiante.cod_estudiante, estudiante.nombre, estudiante.apellidos, grupo.numero,
+(select avg(nota.cod_evaluacion) as promedio from nota
+where nota.cod_estudiante=estudiante.cod_estudiante) from  estudiante
+join nota on nota.cod_estudiante=estudiante.cod_estudiante
+join registro on registro.cod_estudiante=estudiante.cod_estudiante
+join grupo on grupo.cod_grupo=registro.cod_grupo
+join anno on anno.cod_anno=nota.cod_anno
+join curso on curso.cod_curso=anno.cod_curso
+where anno.anno=$3 and curso.curso=$2
+order by promedio desc;
+
+return $1;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.escalafon_anual(refcursor, character varying, integer)
+  OWNER TO postgres;
+
