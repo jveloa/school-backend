@@ -47,9 +47,9 @@ public class RecordServiceImpl implements RecordService {
     public void updateRecord(RecordDto record) throws SQLException {
         try (Connection con = jdbcTemplate.getDataSource().getConnection()) {
             PreparedStatement cs = con.prepareStatement("update registro set cod_grupo = ? where cod_estudiante = ? ");
-            cs.setInt(2, record.getStudent().getCodStudent());
             cs.setInt(1, record.getGroup().getCodGroup());
-            cs.executeUpdate();
+            cs.setInt(2, record.getStudent().getCodStudent());
+            cs.executeQuery();
         }
     }
 

@@ -1,5 +1,6 @@
 package cu.edu.cujae.backend.api.controller;
 
+import cu.edu.cujae.backend.core.dto.GroupDto;
 import cu.edu.cujae.backend.core.dto.StudentDto;
 
 import cu.edu.cujae.backend.core.dto.SubjectDto;
@@ -53,6 +54,11 @@ public class StudentController {
     @GetMapping("/{codStudent}")
     public ResponseEntity<StudentDto> getSubjectById(@PathVariable int codStudent) throws SQLException {
         StudentDto subject = studentsService.getStudentById(codStudent);
+        return ResponseEntity.ok(subject);
+    }
+    @GetMapping("/group/{codStudent}")
+    public ResponseEntity<GroupDto> getGroupByEst(@PathVariable int codStudent) throws SQLException {
+        GroupDto subject = studentsService.getGroupByEst(codStudent);
         return ResponseEntity.ok(subject);
     }
 }

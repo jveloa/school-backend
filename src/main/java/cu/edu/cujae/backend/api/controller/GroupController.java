@@ -21,7 +21,13 @@ public class GroupController {
 
     @GetMapping("/")
     public ResponseEntity<List<GroupDto>> getGroup() throws SQLException {
-        List<GroupDto> groupList = groupService.getGroupList();
+        List<GroupDto> groupList = groupService.getGroupsList();
+        return ResponseEntity.ok(groupList);
+    }
+
+    @GetMapping("/groupsLastCourse")
+    public  ResponseEntity<List<GroupDto>> getGroupLastCourse() throws SQLException{
+        List<GroupDto> groupList = groupService.getGroupsLastCourse();
         return ResponseEntity.ok(groupList);
     }
 
@@ -35,6 +41,12 @@ public class GroupController {
     public ResponseEntity<String> delete(@PathVariable int codGroup) throws SQLException{
         groupService.deleteGroup(codGroup);
         return ResponseEntity.ok("Grupo eliminado");
+    }
+
+    @GetMapping("/isAssignmentsGroup/{codGroup}")
+    public ResponseEntity<Boolean> isAssignmentsGroup(@PathVariable int codGroup) throws SQLException{
+        Boolean is = groupService.isAssignmentsGroup(codGroup);
+        return ResponseEntity.ok(is);
     }
 
 }
