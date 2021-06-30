@@ -40,6 +40,27 @@ public class GroupServiceImp implements GroupService {
         setYearData(groupList);
         return groupList;
     }
+    @Override
+    public GroupDto getGropByID(int cod)throws SQLException{
+        GroupDto group = null;
+
+        try(Connection con = jdbcTemplate.getDataSource().getConnection()){
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM grupo where cod_grupo = ? ");
+            ps.setInt(1,cod);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                group = new GroupDto(
+                        rs.getInt("cod_grupo"),
+                       yearService.getYearById(rs.getInt("cod_anno")) ,
+                        rs.getInt("numero"));
+
+
+
+            }
+        }
+
+        return group;
+    }
 
     @Override
     public List<GroupDto> getGroupsLastCourse() throws SQLException {
