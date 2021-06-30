@@ -1,5 +1,6 @@
 package cu.edu.cujae.backend.core.service;
 
+import cu.edu.cujae.backend.core.dto.GroupDto;
 import cu.edu.cujae.backend.core.dto.MunicipalityDto;
 import cu.edu.cujae.backend.core.dto.StudentDto;
 
@@ -13,5 +14,6 @@ public interface StudentsService {
     void deleteStudents(int codStudents) throws SQLException;
     void updateStudents(StudentDto student) throws SQLException;
     StudentDto getStudentById(int codStudent) throws SQLException;
+    GroupDto getGroupByEst(int codEst) throws SQLException;
 
 }

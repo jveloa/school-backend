@@ -23,6 +23,9 @@ public class StudentsServicelmpl implements StudentsService {
     @Autowired
     private GenderServiceImpl genderService;
 
+    @Autowired
+    private GroupServiceImp groupServiceImp;
+
     @Override
     public List<StudentDto> getStudents() throws SQLException {
         List<StudentDto> students = new ArrayList<>();
@@ -100,6 +103,30 @@ public class StudentsServicelmpl implements StudentsService {
         }
 
         return student;
+    }
+    @Override
+    public GroupDto getGroupByEst(int codEst) throws SQLException{
+        GroupDto group=null;
+        try(Connection con = jdbcTemplate.getDataSource().getConnection()){
+            PreparedStatement ps = con.prepareStatement("select grupo.cod_grupo \n" +
+                    " from estudiante \n" +
+                    " join registro on estudiante.cod_estudiante = registro.cod_estudiante\n" +
+                    " join grupo on registro.cod_grupo = grupo.cod_grupo\n" +
+                    "\n" +
+                    "where estudiante.cod_estudiante = ?;");
+            ps.setInt(1,codEst);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                group =groupServiceImp.getGropByID(rs.getInt("cod_grupo"));
+
+
+
+            }
+        }
+
+
+
+        return group;
     }
 
      public List<StudentDto> llenarGender(List<StudentDto> students)throws SQLException{

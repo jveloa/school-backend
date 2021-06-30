@@ -12,6 +12,7 @@ public interface GroupService {
     void deleteGroup(int codGroup) throws SQLException;
     List<GroupDto> getGroupsLastCourse() throws SQLException;
     boolean isAssignmentsGroup(int codGroup) throws SQLException;
+    GroupDto getGropByID(int cod)throws SQLException;
 
 
 }

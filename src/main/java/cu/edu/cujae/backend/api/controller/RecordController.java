@@ -26,13 +26,13 @@ public class RecordController {
     @PostMapping("/")
     public ResponseEntity<String> create(@RequestBody RecordDto record) throws SQLException {
         recordService.createRecord(record);
-        return ResponseEntity.ok("Grupo insertado");
+        return ResponseEntity.ok("Registro insertado");
     }
 
     @PutMapping("/")
     public ResponseEntity<String> update(@RequestBody RecordDto record) throws SQLException {
         recordService.updateRecord(record);
-        return ResponseEntity.ok("Grupo Modificado");
+        return ResponseEntity.ok("Regitro Modificado");
     }
 
     @DeleteMapping("/{codRecord}")
