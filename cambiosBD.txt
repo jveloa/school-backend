@@ -19,3 +19,6 @@ $BODY$
   COST 100;
 ALTER FUNCTION public.delete_grupo(integer)
   OWNER TO postgres;
+
+ -agregue la funcion suspensos_por_annos(Nestor)
+ -agregue la funcion aprobados_por_anno(Nestor)

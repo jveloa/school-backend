@@ -66,27 +66,80 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
     @Override
-    public List<EvaluationDto> getEvaluationsByStudent(int codStudent) throws SQLException {
-        List<EvaluationDto> evaluations = new ArrayList<EvaluationDto>();
-        try(Connection conn = jdbcTemplate.getDataSource().getConnection()) {
+    public List<StudentDto> disapprovedsForYear(int codCourse, int year) throws SQLException {
+        ArrayList<StudentDto> disapproveds = new ArrayList<StudentDto>();
+        try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
             conn.setAutoCommit(false);
-            CallableStatement cs = conn.prepareCall("{call notas_por_estudiante(?, ?)}");
+            CallableStatement cs = conn.prepareCall("{call suspensos_por_anno(?, ?, ?)}");
             cs.setNull(1, Types.REF, "refcursor");
             cs.registerOutParameter(1, Types.REF_CURSOR);
-            cs.setInt(2, codStudent);
+            cs.setInt(2, codCourse);
+            cs.setInt(3, year);
             cs.execute();
             ResultSet re = (ResultSet) cs.getObject(1);
 
-            while (re.next()){
-                evaluations.add(new EvaluationDto(
-                         subjectService.getSubjectById(re.getInt("cod_asignatura"))
-                        ,studentService.getStudentById(re.getInt("cod_estudiante"))
-                        ,yearService.getYearById(re.getInt("cod_anno"))
-                        ,rangeEvaluationService.getRangeEvaluationById(re.getInt("cod_evaluacion"))
+            while (re.next()) {
+                disapproveds.add(new StudentDto(
+                        re.getInt("cod_estudiante")
+                        , re.getString("nombre")
+                        , re.getString("apellidos")
+                        , new GenderDto(re.getInt("cod_sexo"))
+                        , new MunicipalityDto(re.getInt("cod_municipio"), "")
                 ));
             }
-
-        return evaluations;
+            return disapproveds;
         }
     }
-}
+
+    @Override
+    public List<StudentDto> approvedsForYear(int codCourse, int year) throws SQLException {
+        ArrayList<StudentDto> disapproveds = new ArrayList<StudentDto>();
+        try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
+            conn.setAutoCommit(false);
+            CallableStatement cs = conn.prepareCall("{call aprobados_por_anno(?, ?, ?)}");
+            cs.setNull(1, Types.REF, "refcursor");
+            cs.registerOutParameter(1, Types.REF_CURSOR);
+            cs.setInt(2, codCourse);
+            cs.setInt(3, year);
+            cs.execute();
+            ResultSet re = (ResultSet) cs.getObject(1);
+
+            while (re.next()) {
+                disapproveds.add(new StudentDto(
+                        re.getInt("cod_estudiante")
+                        , re.getString("nombre")
+                        , re.getString("apellidos")
+                        , new GenderDto(re.getInt("cod_sexo"))
+                        , new MunicipalityDto(re.getInt("cod_municipio"), "")
+                ));
+            }
+            return disapproveds;
+        }
+    }
+
+    @Override
+        public List<EvaluationDto> getEvaluationsByStudent ( int codStudent) throws SQLException {
+            List<EvaluationDto> evaluations = new ArrayList<EvaluationDto>();
+            try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
+                conn.setAutoCommit(false);
+                CallableStatement cs = conn.prepareCall("{call notas_por_estudiante(?, ?)}");
+                cs.setNull(1, Types.REF, "refcursor");
+                cs.registerOutParameter(1, Types.REF_CURSOR);
+                cs.setInt(2, codStudent);
+                cs.execute();
+                ResultSet re = (ResultSet) cs.getObject(1);
+
+                while (re.next()) {
+                    evaluations.add(new EvaluationDto(
+                            subjectService.getSubjectById(re.getInt("cod_asignatura"))
+                            , studentService.getStudentById(re.getInt("cod_estudiante"))
+                            , yearService.getYearById(re.getInt("cod_anno"))
+                            , rangeEvaluationService.getRangeEvaluationById(re.getInt("cod_evaluacion"))
+                    ));
+                }
+
+                return evaluations;
+            }
+        }
+    }
+

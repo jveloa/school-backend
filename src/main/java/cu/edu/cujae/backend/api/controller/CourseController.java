@@ -28,6 +28,11 @@ public class CourseController {
         courseService.createCourse(course);
         return ResponseEntity.ok("Curso creado");
     }
+    @PostMapping("/newCourse")
+    public ResponseEntity<String> newCourse() throws SQLException {
+        courseService.nextCourse();
+        return ResponseEntity.ok("Nuevo Curso iniciado");
+    }
 
     @PutMapping("/")
     public ResponseEntity<String> update(@RequestBody CourseDto course) throws SQLException {

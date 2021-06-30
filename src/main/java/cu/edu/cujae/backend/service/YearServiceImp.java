@@ -106,6 +106,25 @@ public class YearServiceImp implements YearService {
         return year;
     }
 
+    @Override
+    public void createYearsForNewCourse(int codCourse, int years) throws SQLException {
+        for(int i=0; i<years; i++){
+            createYear(new YearDto(0, i+1, new CourseDto(codCourse)));
+        }
+    }
+
+    @Override
+    public int getCodAnnoByCourse(int year, int codCOurse) throws SQLException {
+        List<YearDto> years = getYears();
+        int yearCode=-1;
+        for (YearDto i: years) {
+            if(i.getYearNumber() == year && i.getCourse().getCodCourse() == codCOurse){
+                yearCode = i.getCodYear();
+            }
+        }
+        return yearCode;
+    }
+
     private void setCourseName(YearDto year, Map<Integer,String> mapCourses) {
         year.getCourse().setCourse(mapCourses.get(year.getCourse().getCodCourse()));
     }

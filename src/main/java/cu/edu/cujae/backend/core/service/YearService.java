@@ -14,4 +14,6 @@ public interface YearService {
     void updateYear(YearDto Year) throws SQLException;
     void setData(YearDto year, Map<Integer, String> mapCourses, ResultSet rs) throws SQLException;
     YearDto getYearById(int codYear) throws SQLException;
+    void createYearsForNewCourse(int codCourses, int years) throws SQLException;
+    int getCodAnnoByCourse(int year, int codCOurse) throws SQLException;
 }

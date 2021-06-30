@@ -29,6 +29,7 @@ public class SubjectServiceImp implements SubjectService {
     @Autowired
     private CourseService courseService;
 
+
     @Override
     public void createSubject(SubjectDto subject) throws SQLException {
         try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
@@ -40,6 +41,17 @@ public class SubjectServiceImp implements SubjectService {
             cs.setString(1, subject.getNameSubject());
             cs.setInt(2, subject.getHours());
             cs.setInt(3, rs.getInt("cod_anno"));
+            cs.executeUpdate();
+        }
+    }
+
+    @Override
+    public void createSubject2(SubjectDto subject) throws SQLException {
+        try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
+            CallableStatement cs = conn.prepareCall("{call create_asignatura(?,?,?)}");
+            cs.setString(1, subject.getNameSubject());
+            cs.setInt(2, subject.getHours());
+            cs.setInt(3, subject.getYear().getCodYear());
             cs.executeUpdate();
         }
     }
@@ -161,6 +173,49 @@ public class SubjectServiceImp implements SubjectService {
         }
     }
 
+    @Override
+    public void createSubjectsNewCourse(int years) throws SQLException {
+        List<CourseDto> courses = courseService.getCourses();
+        for(int i=0;i<years;i++){
+            int codYear = yearService.getCodAnnoByCourse(i+1, courses.get(courses.size()-1).getCodCourse());
+            List<SubjectDto> subjectsByYear = getSubjectsByYear(courses.get(courses.size()-2).getCodCourse(),i+1);
+            for (SubjectDto asignatura: subjectsByYear) {
+                createSubject2(new SubjectDto(
+                        asignatura.getCodSubject(),
+                        asignatura.getHours(),
+                        asignatura.getNameSubject(),
+                        new YearDto(codYear,0, new CourseDto())
+                ));
+            }       
+        }
+    }
+
+    @Override
+    public List<SubjectDto> getSubjectsByYear(int codCourse, int year) throws SQLException {
+        List<SubjectDto> subjects = new ArrayList<SubjectDto>();
+        try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
+            conn.setAutoCommit(false);
+            CallableStatement cs = conn.prepareCall("{call asignaturas_por_anno(?, ?, ?)}");
+            cs.setNull(1, Types.REF, "refcursor");
+            cs.registerOutParameter(1, Types.REF_CURSOR);
+            cs.setInt(2, codCourse);
+            cs.setInt(3, year);
+            cs.execute();
+            ResultSet re = (ResultSet) cs.getObject(1);
+
+            while (re.next()) {
+                subjects.add(new SubjectDto(
+
+                        re.getInt("cod_asignatura"),
+                        re.getInt("horas"),
+                        re.getString("nombre"),
+                        new YearDto(re.getInt("cod_anno"))
+
+                ));
+            }
+            return subjects;
+        }
+    }
 
 
     private void setYearData(List<SubjectDto> subjects) throws SQLException {
